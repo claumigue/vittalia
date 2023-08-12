@@ -1,0 +1,107 @@
+/*
+Theme Name:     Medilink Child
+Template:       medilink
+Theme URI:      https://radiustheme.com
+Author:         Radiustheme
+Author URI:     https://radiustheme.com/demo/medilink
+Description:    Medilink child theme| Responsive WordPress Medical Theme is one of the Latest and World Standard Multipurpose Responsive WordPress Medical  Theme. Using medilink user can get to Start a  Medical, Medical  Shop and Medical schedule.
+Version:        1.0
+License:        GNU General Public License v2 or later
+License URI:    http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain:    medilink-child
+Tags:           one-column, two-columns, right-sidebar, accessibility-ready, custom-background, custom-colors, custom-header, custom-menu, editor-style, featured-images, flexible-header, microformats, post-formats, rtl-language-support, sticky-post, threaded-comments, translation-ready
+*/
+
+@media only screen and (max-width: 1024px) {
+    .site.site-wrp.opt-slideInUp .mean-container .mean-bar {
+        position: fixed;
+        top: 0;
+        /* transition: all 1s ease-out;
+        animation-name: headerSlideDown;
+        animation-duration: 0.50s; */
+    }
+
+    /* .mobile-menu-right {
+        transition: all 1s ease-out;
+        animation-name: headerSlideDown;
+        animation-duration: 0.50s;
+    } */
+}
+
+.status-msg.success {
+    /* color: #28a355; */
+    padding: 6px 20px;
+    border: 2px solid #28a355;
+}
+
+.status-msg.error {
+    /* color: red; */
+    padding: 6px 20px;
+    border: 2px solid red;
+}
+
+/**
+* Formulario Nuevo profesional
+*/
+/* Ocultar los campos de hora por defecto */
+.day-service-hours .time {
+    display: none;
+}
+
+/* Mostrar los campos de hora si el checkbox está marcado */
+.day-checkbox:checked~.time {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.consultation-hours {
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed #e9e6e6;
+}
+
+.day-service-hours {
+    display: flex;
+    align-items: baseline;
+    height: 100px;
+}
+
+.day-service-hours label {
+    margin-bottom: 0;
+}
+
+.day-checkbox~label {
+    width: 26%;
+    margin-left: 10px;
+}
+
+.time label {
+    width: initial;
+}
+
+.wpcf7-form.np-form .time input {
+    width: initial;
+}
+
+.start-time {
+    min-width: 50%;
+    margin-bottom: 3px;
+}
+
+.end-time {
+    min-width: 50%;
+    margin-bottom: 3px;
+}
+
+@media (max-width: 411px) {
+    .day-service-hours {
+        display: block;
+        align-items: center;
+        height: 80px;
+    }
+    .day-checkbox~label {
+        width: 30%;
+    }
+}
