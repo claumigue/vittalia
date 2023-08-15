@@ -14,28 +14,29 @@ global $post;
 $medilink = MEDILINK_THEME_PREFIX;
 $cpt      = MEDILINK_THEME_CPT_PREFIX;
 
+// $_appointmnet_schedules       = get_post_meta( $id, "{$cpt}_doctors_schedule", true );
+// $_appointmnet_schedules_title = get_post_meta( $id, "{$cpt}_schedule_title", true );
+// $_experienced_title           = get_post_meta( $id, "{$cpt}_experienced_title", true );
+// $_experienced                 = get_post_meta( $id, "{$cpt}_experienced", true );
+// $_education_title             = get_post_meta( $id, "{$cpt}_skill_title", true );
+// $_education                   = get_post_meta( $id, "{$cpt}_doctor_skill", true );
+// $_about_title                 = get_post_meta( $id, "{$cpt}_doctor_about_title", true );
 $thumb_size                   = "{$medilink}-size4";
 $thumb_size6                  = "{$medilink}-size6";
 $id                           = get_the_id();
-// $_appointmnet_schedules       = get_post_meta( $id, "{$cpt}_doctors_schedule", true );
-// $_appointmnet_schedules_title = get_post_meta( $id, "{$cpt}_schedule_title", true );
 $_designation                 = get_post_meta( $id, "{$cpt}_designation", true );
-$_experienced_title           = get_post_meta( $id, "{$cpt}_experienced_title", true );
-$_experienced                 = get_post_meta( $id, "{$cpt}_experienced", true );
-$_education_title             = get_post_meta( $id, "{$cpt}_skill_title", true );
-$_education                   = get_post_meta( $id, "{$cpt}_doctor_skill", true );
-$_about_title                 = get_post_meta( $id, "{$cpt}_doctor_about_title", true );
 $_designation                 = get_post_meta( $id, "{$cpt}_designation", true );
 $_degree                      = get_post_meta( $id, "{$cpt}_degree", true );
+$_about                       = get_post_meta( $id, "{$cpt}_doctor_about", true );
 $_phone                       = get_post_meta( $id, "{$cpt}_phone", true );
 $_office                      = get_post_meta( $id, "{$cpt}_office", true );
 $_email                       = get_post_meta( $id, "{$cpt}_email", true );
 $_emergency_cases             = get_post_meta( $id, "{$cpt}_emergency_cases", true );
-$_about                       = get_post_meta( $id, "{$cpt}_doctor_about", true );
-$_emergency_cases             = get_post_meta( $id, "{$cpt}_emergency_cases", true );
 $_acepta_obra_social          = get_post_meta( $id, "{$cpt}_doctor_os", true );
 $socials                      = get_post_meta( $id, "{$cpt}_doctor_social", true );
 $social_fields                = Helper::doctor_socials();
+
+$_especialidad = get_the_terms( $id, 'medilink_doctor_category' )[0]->name;
 
 $_doctor_horarios = array();
 $_days            = array(
@@ -68,7 +69,8 @@ foreach ( $_days as $day_en => $day_es ) {
 			<div class="team-detail-box-layout1">
 				<div class="single-item">
 					<div class="item-content">
-						<h3 class="section-title item-title mb-1"><?php echo esc_html( $_designation ); ?></h3>
+						<h3 class="section-title item-title mb-1"><?php echo esc_html( $_especialidad ); ?></h3>
+						<!-- <h3 class="section-title item-title mb-1"><?php echo esc_html( $_designation ); ?></h3> -->
 						<span class="item-designation text-success"><?php echo esc_html( $_degree ); ?></span>
 					</div>
 				</div>
@@ -123,8 +125,8 @@ foreach ( $_days as $day_en => $day_es ) {
 					<!-- <img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/profesional-default-image.jpg" alt="<?php the_title(); ?>"> -->
 				<?php } ?>
 			</div>
-			<?php $socials = is_array( $socials ) ? array_filter($socials) : $socials; ?>
-			<?php if ( !empty( $_phone ) || !empty( $_office ) || !empty( $_email ) || !empty( $socials ) ) { ?>
+			<?php $socials = is_array( $socials ) ? array_filter( $socials ) : $socials; ?>
+			<?php if ( ! empty( $_phone ) || ! empty( $_office ) || ! empty( $_email ) || ! empty( $socials ) ) { ?>
 				<div class="widgets widget-team-contact">
 					<h3 class="section-title title-bar-primary2"><?php echo esc_html__( 'Personal Info', 'medilink' ); ?></h3>
 					<ul>

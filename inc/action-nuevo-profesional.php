@@ -111,7 +111,7 @@ function procesar_formulario_nuevo_profesional() {
 
 		$meta_input += $days_sanitized;
 
-		$thumbnail_id = 5360; // ID de la imagen destacada por defecto
+		$thumbnail_id = 5273; // ID de la imagen destacada por defecto
 
 		// Crear un array con los datos del post
 		$nuevo_profesional = array(
