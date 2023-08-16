@@ -42,35 +42,44 @@ jQuery(document).ready(function ($) {
 				days_data.push(day_data);
 			}
 		});
-		
-		// Convertir el array en una cadena JSON usando el método JSON.stringify()
-		let days_json = JSON.stringify(days_data);
 
+        // Obtener el ID del post si existe
+        let post_id = $('#post_id').val();
+
+        // Crear un objeto con los datos del formulario y el ID del post si existe
+        let data = {
+            action: 'vittalia_ajax_form',
+            _ajax_nonce: ajax_object.nonce,
+            title: $('#doctor_title').val(),
+            about: $('#doctor_about').val(),
+            designation: $('#doctor_designation').val(),
+            especialidad: $('#doctor_category').val(),
+            subespecialidad: $('#doctor_degree').val(),
+            floor: $('#office_floor').val(),
+            location: $('#office_location').val(),
+            doctor_os: doctor_os_value,
+            whatsapp: $('#doctor_whatsapp').val(),
+            phone: $('#doctor_phone').val(),
+            email: $('#doctor_email').val(),
+            website: $('#doctor_web').val(),
+            instagram: $('#doctor_instagram').val(),
+            facebook: $('#doctor_facebook').val(),
+            linkedin: $('#doctor_linkedin').val(),
+            youtube: $('#doctor_youtube').val(),
+            days: days_data // Añadir la cadena JSON como un parámetro más en el objeto data
+        };
+
+        // Si hay un ID del post, añadirlo al objeto data
+        if (post_id) {
+            data.id = post_id;
+        }
+
+        // Enviar la solicitud ajax con el objeto data
 		$.ajax({
 			url: ajax_object.ajax_url,
 			type: 'post',
 			dataType: 'json',
-			data: {
-				action: 'vittalia_ajax_form',
-				_ajax_nonce: ajax_object.nonce,
-				title: $('#doctor_title').val(),
-				about: $('#doctor_about').val(),
-				designation: $('#doctor_designation').val(),
-				especialidad: $('#doctor_category').val(),
-				subespecialidad: $('#doctor_degree').val(),
-				floor: $('#office_floor').val(),
-				location: $('#office_location').val(),
-				doctor_os: doctor_os_value,
-				whatsapp: $('#doctor_whatsapp').val(),
-				phone: $('#doctor_phone').val(),
-				email: $('#doctor_email').val(),
-				website: $('#doctor_web').val(),
-				instagram: $('#doctor_instagram').val(),
-				facebook: $('#doctor_facebook').val(),
-				linkedin: $('#doctor_linkedin').val(),
-				youtube: $('#doctor_youtube').val(),
-				days: days_data // Añadir la cadena JSON como un parámetro más en el objeto data
-			},
+			data: data,
 			beforeSend: function () {
 				$('.status-msg').show().removeClass(['error', 'success']).text('Enviando...');
 				$('#submit').prop('disabled', true);

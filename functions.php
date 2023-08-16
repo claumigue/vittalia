@@ -28,7 +28,7 @@ function vittalia_insert_custom_js() {
 add_action( 'wp_enqueue_scripts', 'vittalia_insert_custom_js' );
 
 /**
- * Includes
+ * Includes --------------------------------------------------------------------------
  */
 require_once 'inc/vittalia-tools.php';
 require_once 'inc/vittalia-helper.php';
@@ -37,8 +37,8 @@ require_once 'inc/custom-fields/rt-fields-profesionales.php';
 require_once 'inc/custom-fields/rt-metabox-horarios.php';
 require_once 'inc/custom-fields/acf.php';
 require_once 'inc/custom-roles.php';
-require_once 'inc/shortcodes/form-nuevo-profesional.php';
-require_once 'inc/action-nuevo-profesional.php';
+require_once 'inc/shortcodes/formulario-profesional.php';
+require_once 'inc/ajax-action-profesional.php';
 
 // // Define el directorio base
 // $base_dir = get_stylesheet_directory() . '/inc/';
@@ -46,10 +46,11 @@ require_once 'inc/action-nuevo-profesional.php';
 // // Busca todos los archivos .php dentro del directorio base y sus subdirectorios
 // $files = glob( $base_dir . '{*,*/*}.php', GLOB_BRACE );
 
-// print '<pre>';print_r($files);print '</pre>';die();
+// // print '<pre>';print_r($files);print '</pre>';die();
 
 // // Recorrer el array con un bucle foreach
-// foreach ($files as $file) {
-//   // Incluir el archivo con la ruta relativa al script principal
-//   require_once $file;
+// foreach ( $files as $file ) {
+// 	// Incluir el archivo con la ruta relativa al script principal
+// 	require_once $file;
 // }
+// -----------------------------------------------------------------------------------

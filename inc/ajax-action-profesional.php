@@ -46,11 +46,7 @@ function procesar_formulario_nuevo_profesional() {
 			'especialidad_id' => (int) $_POST['especialidad'], // Obtener el ID de la especialidad seleccionada en el formulario
 		);
 
-		// Obtener la cadena JSON con los datos de los horarios, eliminando los caracteres escapados usando stripslashes()
-		// $days_json = stripslashes( $_POST['days'] );
-
-		// Convertir la cadena JSON en un array asociativo usando json_decode()
-		// $days_array = json_decode( $days_json, true );
+		// Obtener los datos de los horarios
 		$days_array = $_POST['days'];
 
 		// Crear un array vacío para almacenar los datos sanitizados
@@ -105,6 +101,8 @@ function procesar_formulario_nuevo_profesional() {
 			'medilink_email'              => $datos_formulario['email'],
 			'medilink_website'            => $datos_formulario['website'],
 			'medilink_doctor_os'          => $datos_formulario['doctor_os'],
+			'medilink_office_floor'       => $datos_formulario['floor'],
+			'medilink_office_location'    => $datos_formulario['location'],
 			'medilink_doctor_social'      => $socials,
 			// 'medilink_schedule_title'     => 'Horarios de consulta',
 		);
@@ -113,8 +111,11 @@ function procesar_formulario_nuevo_profesional() {
 
 		$thumbnail_id = 5273; // ID de la imagen destacada por defecto
 
+        // Obtener el ID del post si existe
+        $post_id = isset( $_POST['id'] ) ? (int) $_POST['id'] : 0;
+
 		// Crear un array con los datos del post
-		$nuevo_profesional = array(
+		$_post_array = array(
 			'post_type'     => 'medilink_doctor',
 			'post_title'    => $datos_formulario['title'],
 			'post_status'   => 'publish',
@@ -125,26 +126,36 @@ function procesar_formulario_nuevo_profesional() {
 			'meta_input'    => $meta_input,
 		);
 
-		// Insertar el post y obtener su ID en caso de éxito
-		$nuevo_profesional_id = wp_insert_post( $nuevo_profesional );
+        // Comprobar si hay un ID del post
+		if ( $post_id ) {
+			// Si hay un ID, actualizar el post existente con los nuevos datos
+			$_post_array['ID'] = $post_id;
+			$profesional_id    = wp_update_post( $_post_array );
+            $post_action         = 'update';
+		} else {
+			// Si no hay un ID, crear un nuevo post con los datos del formulario
+			$profesional_id = wp_insert_post( $_post_array );
+            $post_action         = 'create';
+		}
 
-		// Si el post se ha creado correctamente...
-		if ( $nuevo_profesional_id ) {
-			// Obtener el link del post creado
-			$nuevo_profesional_link = get_permalink( $nuevo_profesional_id );
-			// Enviar un correo con los datos del post y un mensaje personalizado y guardar la confirmación de envío
-			$enviado = enviar_correo_nuevo_profesional( $datos_formulario, $nuevo_profesional_link );
-			// Enviar mensajes de confirmación o de error según el resultado del envío
-			$res = $enviado ? array(
-				'status' => 1,
-				'msg'    => 'La página del profesional se ha creado correctamente y se ha dado aviso al administrador.',
-				'link'   => $nuevo_profesional_link,
-			)
-				: array(
-					'status' => 0,
-					'msg'    => 'La página del profesional se ha creado correctamente pero no se ha podido dar aviso al administrador.',
-					'link'   => $nuevo_profesional_link,
-				);
+        // Si el post se ha creado o actualizado correctamente...
+        if ( $profesional_id ) {
+            // Obtener el link del post creado o actualizado
+            $profesional_link = get_permalink( $profesional_id );
+            // Enviar un correo con los datos del post y un mensaje personalizado y guardar la confirmación de envío
+            $enviado = enviar_correo_nuevo_profesional( $datos_formulario, $days_array, $profesional_link, $post_action );
+            // Enviar mensajes de confirmación o de error según el resultado del envío
+            // Cambiar el mensaje según si hay un ID o no
+            $res = $enviado ? array(
+                'status' => 1,
+                'msg'    => $post_id ? 'La página del profesional se ha actualizado correctamente y se ha dado aviso al administrador.' : 'La página del profesional se ha creado correctamente y se ha dado aviso al administrador.',
+                'link'   => $profesional_link,
+            )
+                : array(
+                    'status' => 0,
+                    'msg'    => $post_id ? 'La página del profesional se ha actualizado correctamente pero no se ha podido dar aviso al administrador.' : 'La página del profesional se ha creado correctamente pero no se ha podido dar aviso al administrador.',
+                    'link'   => $profesional_link,
+                );
 		} else {
 			// El post no se ha creado correctamente, enviar mensaje de error
 			$res = array(
@@ -159,36 +170,89 @@ function procesar_formulario_nuevo_profesional() {
 }
 
 // Enviar el correo con los datos del post y un mensaje personalizado
-function enviar_correo_nuevo_profesional( $datos, $link ) {
-	 // Cambiar el tipo de contenido del correo a HTML (usando el filtro wp_mail_content_type)
+function enviar_correo_nuevo_profesional( $datos, $horarios, $link, $post_action ) {
+	// Cambiar el tipo de contenido del correo a HTML (usando el filtro wp_mail_content_type)
 	add_filter(
 		'wp_mail_content_type',
 		function () {
-			return 'text/html';
-		}
+			return 'text/html'; }
 	);
 
 	// Definir el destinatario y el asunto del correo
 	$destinatario = get_bloginfo( 'admin_email' );
-	$asunto       = 'Nuevo profesional creado desde el frontend';
+	// Cambiar el asunto según la acción
+	if ( $post_action == 'create' ) {
+		$asunto = 'Nuevo profesional creado desde el frontend';
+	} else {
+		$asunto = 'Profesional actualizado desde el frontend';
+	}
 
 	// Definir el contenido del correo en formato HTML
 	$especialidad = get_term( $datos['especialidad_id'], 'medilink_doctor_category' )->name;
 	$doctor_os    = $datos['doctor_os'] ? 'Sí' : 'No';
 
-	$contenido  = '<p>Se ha creado un nuevo post de tipo "medilink_doctor" desde el frontend con los siguientes datos:</p>';
+	$contenido  = '<p>Se ha ' . ( $post_action == 'create' ? 'creado' : 'actualizado' ) . ' un post de tipo "medilink_doctor" desde el frontend con los siguientes datos:</p>';
 	$contenido .= '<ul>';
 	$contenido .= '<li>Título: ' . esc_html( $datos['title'] ) . '</li>';
 	$contenido .= '<li>Acerca de: ' . esc_html( $datos['about'] ) . '</li>';
 	$contenido .= '<li>Designación: ' . esc_html( $datos['designation'] ) . '</li>';
 	$contenido .= '<li>Especialidad: ' . esc_html( $especialidad ) . '</li>';
 	$contenido .= '<li>Subespecialidad: ' . esc_html( $datos['subespecialidad'] ) . '</li>';
+	// Añadir los campos que faltan
+	$contenido .= '<li>Piso: ' . esc_html( $datos['floor'] ) . '</li>';
+	$contenido .= '<li>Ubicación: ' . esc_html( $datos['location'] ) . '</li>';
+	$contenido .= '<li>Sitio web: ' . esc_html( $datos['website'] ) . '</li>';
+	$contenido .= '<li>Instagram: ' . esc_html( $datos['instagram'] ) . '</li>';
+	$contenido .= '<li>Facebook: ' . esc_html( $datos['facebook'] ) . '</li>';
+	$contenido .= '<li>Linkedin: ' . esc_html( $datos['linkedin'] ) . '</li>';
+	$contenido .= '<li>Youtube: ' . esc_html( $datos['youtube'] ) . '</li>';
 	$contenido .= '<li>Teléfono: ' . esc_html( $datos['phone'] ) . '</li>';
 	$contenido .= '<li>Acepta obras sociales: ' . esc_html( $doctor_os ) . '</li>';
 	$contenido .= '</ul>';
-	// Incluir el link del post creado en el contenido del correo
+
+	// Añadir una tabla con los horarios
+	$contenido .= '<p>Estos son los horarios de consulta:</p>';
+	$contenido .= '<table border="1">';
+	$contenido .= '<tr><th>Día</th><th>Segmento A</th><th>Segmento B</th></tr>';
+	// Crear un array asociativo con los nombres de los días en inglés y español
+	$days = array(
+		'mon' => 'Lunes',
+		'tue' => 'Martes',
+		'wed' => 'Miércoles',
+		'thu' => 'Jueves',
+		'fri' => 'Viernes',
+		'sat' => 'Sábado',
+		'sun' => 'Domingo',
+	);
+	// Usar un bucle for para recorrer el array de los horarios
+	for ( $i = 0; $i < count( $horarios ); $i++ ) {
+		// Obtener el nombre del día, el tiempo de inicio y fin de cada segmento
+		$en_day  = $horarios[ $i ]['day'];
+		$es_day  = $days[$en_day];
+		$start_a = $horarios[ $i ]['start_a'];
+		$end_a   = $horarios[ $i ]['end_a'];
+		// Comprobar si hay datos del segmento B
+		if ( isset( $horarios[ $i ]['start_b'] ) && isset( $horarios[ $i ]['end_b'] ) ) {
+			$start_b = $horarios[ $i ]['start_b'];
+			$end_b   = $horarios[ $i ]['end_b'];
+		} else {
+			// Si no hay datos, asignar valores vacíos
+			$start_b = '';
+			$end_b   = '';
+		}
+		// Imprimir una fila de la tabla con los datos del día
+		$contenido .= "<tr><td>$es_day</td><td>$start_a - $end_a</td><td>$start_b - $end_b</td></tr>";
+	}
+	$contenido .= '</table>';
+
+	// Incluir el link del post creado o actualizado en el contenido del correo
+	// Cambiar el texto según la acción
+	if ( $post_action == 'create' ) {
+		$contenido .= '<p>Un nuevo profesional ha sido creado desde el frontend.</p>';
+	} else {
+		$contenido .= '<p>El profesional ha sido actualizado desde el frontend.</p>';
+	}
 	$contenido .= '<p>Puedes revisar y editar el post desde el panel de administración o desde este <a href="' . esc_url( $link ) . '">enlace</a>.</p>';
-	$contenido .= '<p>Gracias por usar nuestro servicio.</p>';
 
 	// Definir las cabeceras del correo
 	$cabeceras = array(
@@ -200,7 +264,7 @@ function enviar_correo_nuevo_profesional( $datos, $link ) {
 	$resultado = wp_mail( $destinatario, $asunto, $contenido, $cabeceras );
 
 	// Restablecer el tipo de contenido para evitar conflictos
-	remove_filter( 'wp_mail_content_type', 'wpdocs_set_html_mail_content_type' );
+	remove_filter( 'wp_mail_content_type', '__return_false' );
 
 	return $resultado;
 }
