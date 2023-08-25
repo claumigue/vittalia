@@ -109,53 +109,55 @@ function procesar_formulario_nuevo_profesional() {
 
 		$meta_input += $days_sanitized;
 
-		$thumbnail_id = 5273; // ID de la imagen destacada por defecto
+		$thumbnail_id = 5273; // ID de la imagen destacada por defecto (local)
+		// $thumbnail_id = 5342; // ID de la imagen destacada por defecto (producción)
 
-        // Obtener el ID del post si existe
-        $post_id = isset( $_POST['id'] ) ? (int) $_POST['id'] : 0;
+		// Obtener el ID del post si existe
+		$post_id = isset( $_POST['id'] ) ? (int) $_POST['id'] : 0;
 
 		// Crear un array con los datos del post
 		$_post_array = array(
-			'post_type'     => 'medilink_doctor',
-			'post_title'    => $datos_formulario['title'],
-			'post_status'   => 'publish',
-			'_thumbnail_id' => $thumbnail_id,
-			'tax_input'     => array(
+			'post_type'   => 'medilink_doctor',
+			'post_title'  => $datos_formulario['title'],
+			'post_status' => 'pending',
+			'tax_input'   => array(
 				'medilink_doctor_category' => $datos_formulario['especialidad_id'], // Asignar el término $id_especialidad de la taxonomía 'medilink_doctor_category'
 			),
-			'meta_input'    => $meta_input,
+			'meta_input'  => $meta_input,
 		);
 
-        // Comprobar si hay un ID del post
+		// Comprobar si hay un ID del post
 		if ( $post_id ) {
 			// Si hay un ID, actualizar el post existente con los nuevos datos
 			$_post_array['ID'] = $post_id;
 			$profesional_id    = wp_update_post( $_post_array );
-            $post_action         = 'update';
+			$post_action       = 'update';
 		} else {
-			// Si no hay un ID, crear un nuevo post con los datos del formulario
+			// Si no hay un ID, agregar la imagen destacada por defecto
+			$_post_array['_thumbnail_id'] = $thumbnail_id;
+			// Crear un nuevo post con los datos del formulario
 			$profesional_id = wp_insert_post( $_post_array );
-            $post_action         = 'create';
+			$post_action    = 'create';
 		}
 
-        // Si el post se ha creado o actualizado correctamente...
-        if ( $profesional_id ) {
-            // Obtener el link del post creado o actualizado
-            $profesional_link = get_permalink( $profesional_id );
-            // Enviar un correo con los datos del post y un mensaje personalizado y guardar la confirmación de envío
-            $enviado = enviar_correo_nuevo_profesional( $datos_formulario, $days_array, $profesional_link, $post_action );
-            // Enviar mensajes de confirmación o de error según el resultado del envío
-            // Cambiar el mensaje según si hay un ID o no
-            $res = $enviado ? array(
-                'status' => 1,
-                'msg'    => $post_id ? 'La página del profesional se ha actualizado correctamente y se ha dado aviso al administrador.' : 'La página del profesional se ha creado correctamente y se ha dado aviso al administrador.',
-                'link'   => $profesional_link,
-            )
-                : array(
-                    'status' => 0,
-                    'msg'    => $post_id ? 'La página del profesional se ha actualizado correctamente pero no se ha podido dar aviso al administrador.' : 'La página del profesional se ha creado correctamente pero no se ha podido dar aviso al administrador.',
-                    'link'   => $profesional_link,
-                );
+		// Si el post se ha creado o actualizado correctamente...
+		if ( $profesional_id ) {
+			// Obtener el link del post creado o actualizado
+			$profesional_link = get_permalink( $profesional_id );
+			// Enviar un correo con los datos del post y un mensaje personalizado y guardar la confirmación de envío
+			$enviado = enviar_correo_nuevo_profesional( $datos_formulario, $days_array, $profesional_link, $post_action );
+			// Enviar mensajes de confirmación o de error según el resultado del envío
+			// Cambiar el mensaje según si hay un ID o no
+			$res = $enviado ? array(
+				'status' => 1,
+				'msg'    => $post_id ? 'La página del profesional se ha actualizado correctamente y se ha dado aviso al administrador.' : 'La página del profesional se ha creado correctamente y se ha dado aviso al administrador.',
+				'link'   => $profesional_link,
+			)
+				: array(
+					'status' => 0,
+					'msg'    => $post_id ? 'La página del profesional se ha actualizado correctamente pero no se ha podido dar aviso al administrador.' : 'La página del profesional se ha creado correctamente pero no se ha podido dar aviso al administrador.',
+					'link'   => $profesional_link,
+				);
 		} else {
 			// El post no se ha creado correctamente, enviar mensaje de error
 			$res = array(
@@ -228,7 +230,7 @@ function enviar_correo_nuevo_profesional( $datos, $horarios, $link, $post_action
 	for ( $i = 0; $i < count( $horarios ); $i++ ) {
 		// Obtener el nombre del día, el tiempo de inicio y fin de cada segmento
 		$en_day  = $horarios[ $i ]['day'];
-		$es_day  = $days[$en_day];
+		$es_day  = $days[ $en_day ];
 		$start_a = $horarios[ $i ]['start_a'];
 		$end_a   = $horarios[ $i ]['end_a'];
 		// Comprobar si hay datos del segmento B
