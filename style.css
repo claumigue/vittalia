@@ -43,6 +43,30 @@ Tags:           one-column, two-columns, right-sidebar, accessibility-ready, cus
 /**
 * Formulario Nuevo profesional
 */
+.np-form .h3 {
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: 1;
+    color: #101010;
+    margin-bottom: 15px;
+}
+.np-form .h4 {
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    font-size: 20px;
+    line-height: 26px;
+    font-weight: 500;
+    font-style: normal;
+    color: #101010;
+    margin-bottom: 15px;
+}
+.office-floor {
+    margin-right: 30px;
+}
+.office-location label {
+    margin-right: 20px;
+}
 /* Ocultar los campos de hora por defecto */
 .day-service-hours .time {
     display: none;

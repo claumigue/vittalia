@@ -52,11 +52,11 @@ jQuery(document).ready(function ($) {
             _ajax_nonce: ajax_object.nonce,
             title: $('#doctor_title').val(),
             about: $('#doctor_about').val(),
-            designation: $('#doctor_designation').val(),
+            // designation: $('#doctor_designation').val(),
             especialidad: $('#doctor_category').val(),
             subespecialidad: $('#doctor_degree').val(),
             floor: $('#office_floor').val(),
-            location: $('#office_location').val(),
+            location: $('input:radio[name="office_location"]:checked').val(),
             doctor_os: doctor_os_value,
             whatsapp: $('#doctor_whatsapp').val(),
             phone: $('#doctor_phone').val(),
@@ -66,7 +66,7 @@ jQuery(document).ready(function ($) {
             facebook: $('#doctor_facebook').val(),
             linkedin: $('#doctor_linkedin').val(),
             youtube: $('#doctor_youtube').val(),
-            days: days_data // Añadir la cadena JSON como un parámetro más en el objeto data
+            days: days_data
         };
 
         // Si hay un ID del post, añadirlo al objeto data

@@ -30,7 +30,7 @@ function procesar_formulario_nuevo_profesional() {
 		$datos_formulario = array(
 			'title'           => sanitize_text_field( $_POST['title'] ),
 			'about'           => sanitize_textarea_field( $_POST['about'] ),
-			'designation'     => sanitize_text_field( $_POST['designation'] ),
+			// 'designation'     => sanitize_text_field( $_POST['designation'] ),
 			'subespecialidad' => sanitize_text_field( $_POST['subespecialidad'] ),
 			'floor'           => $floor ? $floor : 2, // Asignar un valor por defecto en caso de que el dato recibido por $_POST[‘floor’] no sea válido
 			'location'        => sanitize_text_field( $_POST['location'] ),
@@ -94,7 +94,7 @@ function procesar_formulario_nuevo_profesional() {
 		$meta_input = array(
 			'medilink_doctor_about_title' => $datos_formulario['title'],
 			'medilink_doctor_about'       => $datos_formulario['about'],
-			'medilink_designation'        => $datos_formulario['designation'],
+			// 'medilink_designation'        => $datos_formulario['designation'],
 			'medilink_degree'             => $datos_formulario['subespecialidad'],
 			'medilink_whatsapp'           => $datos_formulario['whatsapp'],
 			'medilink_phone'              => $datos_formulario['phone'],
@@ -197,7 +197,7 @@ function enviar_correo_nuevo_profesional( $datos, $horarios, $link, $post_action
 	$contenido .= '<ul>';
 	$contenido .= '<li>Título: ' . esc_html( $datos['title'] ) . '</li>';
 	$contenido .= '<li>Acerca de: ' . esc_html( $datos['about'] ) . '</li>';
-	$contenido .= '<li>Designación: ' . esc_html( $datos['designation'] ) . '</li>';
+	// $contenido .= '<li>Designación: ' . esc_html( $datos['designation'] ) . '</li>';
 	$contenido .= '<li>Especialidad: ' . esc_html( $especialidad ) . '</li>';
 	$contenido .= '<li>Subespecialidad: ' . esc_html( $datos['subespecialidad'] ) . '</li>';
 	// Añadir los campos que faltan
