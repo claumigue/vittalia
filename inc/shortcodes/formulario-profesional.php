@@ -44,6 +44,7 @@ function create_form_shortcode() {
 		$facebook  = $socials['facebook'];
 		$linkedin  = $socials['linkedin'];
 		$youtube   = $socials['youtube'];
+		$twitter   = $socials['twitter'];
 	} else {
 		// Dejar el post vacío o nulo
 		$post = null;
@@ -63,6 +64,7 @@ function create_form_shortcode() {
 		$facebook    = '';
 		$linkedin    = '';
 		$youtube     = '';
+		$twitter     = '';
 		// $designation = '';
 	}
 	// print '<pre>';print_r($post);print '</pre>';die();
@@ -261,6 +263,12 @@ function create_form_shortcode() {
 				<p><label for="doctor_youtube"><i class="fab fa-youtube"></i> Youtube
 					<input type="url" id="doctor_youtube" name="doctor_youtube" size="40" value="<?php echo esc_attr( $youtube ); ?>"></label>
 				</p>
+				<p><label for="doctor_twitter"><i class="fab fa-twitter"></i> Twitter
+					<input type="url" id="doctor_twitter" name="doctor_twitter" size="40" value="<?php echo esc_attr( $twitter ); ?>"></label>
+				</p>
+				<!-- <p><label for="doctor_twitter"><img class="d-inline" style="max-width: 1em;" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/svg/x-twitter-2.svg" alt="<?php esc_html_e( 'icon', 'medilink' ); ?>"> Twitter
+					<input type="url" id="doctor_twitter" name="doctor_twitter" size="40" value="<?php echo esc_attr( $twitter ); ?>"></label>
+				</p> -->
 			</div>
 		</div>
 		

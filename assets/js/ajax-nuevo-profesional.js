@@ -66,6 +66,7 @@ jQuery(document).ready(function ($) {
             facebook: $('#doctor_facebook').val(),
             linkedin: $('#doctor_linkedin').val(),
             youtube: $('#doctor_youtube').val(),
+            twitter: $('#doctor_twitter').val(),
             days: days_data
         };
 

@@ -42,6 +42,7 @@ function procesar_formulario_nuevo_profesional() {
 			'facebook'        => sanitize_url( $_POST['facebook'] ),
 			'linkedin'        => sanitize_url( $_POST['linkedin'] ),
 			'youtube'         => sanitize_url( $_POST['youtube'] ),
+			'twitter'         => sanitize_url( $_POST['twitter'] ),
 			'doctor_os'       => filter_var( $_POST['doctor_os'], FILTER_VALIDATE_BOOLEAN ), // Validar el valor del checkbox como booleano
 			'especialidad_id' => (int) $_POST['especialidad'], // Obtener el ID de la especialidad seleccionada en el formulario
 		);
@@ -89,6 +90,7 @@ function procesar_formulario_nuevo_profesional() {
 			'facebook'  => $datos_formulario['facebook'],
 			'linkedin'  => $datos_formulario['linkedin'],
 			'youtube'   => $datos_formulario['youtube'],
+			'twitter'   => $datos_formulario['twitter'],
 		);
 
 		$meta_input = array(
@@ -110,7 +112,7 @@ function procesar_formulario_nuevo_profesional() {
 		$meta_input += $days_sanitized;
 
 		$thumbnail_id = 5273; // ID de la imagen destacada por defecto (local)
-		// $thumbnail_id = 5342; // ID de la imagen destacada por defecto (producción)
+		// $thumbnail_id = 5342; // ID de la imagen destacada por defecto (production)
 
 		// Obtener el ID del post si existe
 		$post_id = isset( $_POST['id'] ) ? (int) $_POST['id'] : 0;
@@ -208,6 +210,7 @@ function enviar_correo_nuevo_profesional( $datos, $horarios, $link, $post_action
 	$contenido .= '<li>Facebook: ' . esc_html( $datos['facebook'] ) . '</li>';
 	$contenido .= '<li>Linkedin: ' . esc_html( $datos['linkedin'] ) . '</li>';
 	$contenido .= '<li>Youtube: ' . esc_html( $datos['youtube'] ) . '</li>';
+	$contenido .= '<li>Twitter: ' . esc_html( $datos['twitter'] ) . '</li>';
 	$contenido .= '<li>Teléfono: ' . esc_html( $datos['phone'] ) . '</li>';
 	$contenido .= '<li>Acepta obras sociales: ' . esc_html( $doctor_os ) . '</li>';
 	$contenido .= '</ul>';
