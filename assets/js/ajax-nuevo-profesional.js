@@ -51,13 +51,13 @@ jQuery(document).ready(function ($) {
             action: 'vittalia_ajax_form',
             _ajax_nonce: ajax_object.nonce,
             title: $('#doctor_title').val(),
-            about: $('#doctor_about').val(),
-            // designation: $('#doctor_designation').val(),
             especialidad: $('#doctor_category').val(),
             subespecialidad: $('#doctor_degree').val(),
+            about: $('#doctor_about').val(),
             floor: $('#office_floor').val(),
             location: $('input:radio[name="office_location"]:checked').val(),
             doctor_os: doctor_os_value,
+            med_group: $('#medical_group').val(),
             whatsapp: $('#doctor_whatsapp').val(),
             phone: $('#doctor_phone').val(),
             email: $('#doctor_email').val(),
@@ -67,7 +67,8 @@ jQuery(document).ready(function ($) {
             linkedin: $('#doctor_linkedin').val(),
             youtube: $('#doctor_youtube').val(),
             twitter: $('#doctor_twitter').val(),
-            days: days_data
+            days: days_data,
+            // designation: $('#doctor_designation').val(),
         };
 
         // Si hay un ID del post, añadirlo al objeto data

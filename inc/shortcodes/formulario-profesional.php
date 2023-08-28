@@ -25,19 +25,19 @@ function create_form_shortcode() {
 		$post_id = $post->ID;
 
 		// Obtener los valores de los campos personalizados del post
-		$title       = get_the_title( $post_id );
-		$about       = get_post_meta( $post_id, 'medilink_doctor_about', true );
-		$degree      = get_post_meta( $post_id, 'medilink_degree', true );
-		$floor       = get_post_meta( $post_id, 'medilink_office_floor', true );
-		$location    = get_post_meta( $post_id, 'medilink_office_location', true );
-		$whatsapp    = get_post_meta( $post_id, 'medilink_whatsapp', true );
-		$phone       = get_post_meta( $post_id, 'medilink_phone', true );
-		$email       = get_post_meta( $post_id, 'medilink_email', true );
-		$website     = get_post_meta( $post_id, 'medilink_website', true );
-		$doctor_os   = get_post_meta( $post_id, 'medilink_doctor_os', true ) ? true : false;
-		// $designation = get_post_meta( $post_id, 'medilink_designation', true );
+		$title = get_the_title( $post_id );
 		// Obtener la categoría del post
-		$category = wp_get_object_terms( $post_id, 'medilink_doctor_category' );
+		$category  = wp_get_object_terms( $post_id, 'medilink_doctor_category' );
+		$degree    = get_post_meta( $post_id, 'medilink_degree', true );
+		$about     = get_post_meta( $post_id, 'medilink_doctor_about', true );
+		$floor     = get_post_meta( $post_id, 'medilink_office_floor', true );
+		$location  = get_post_meta( $post_id, 'medilink_office_location', true );
+		$doctor_os = get_post_meta( $post_id, 'medilink_doctor_os', true ) ? true : false;
+		$med_group = get_post_meta( $post_id, 'medilink_medical_group', true );
+		$whatsapp  = get_post_meta( $post_id, 'medilink_whatsapp', true );
+		$phone     = get_post_meta( $post_id, 'medilink_phone', true );
+		$email     = get_post_meta( $post_id, 'medilink_email', true );
+		$website   = get_post_meta( $post_id, 'medilink_website', true );
 		// Obtener los datos de las redes sociales del post
 		$socials   = get_post_meta( $post_id, 'medilink_doctor_social', true );
 		$instagram = $socials['instagram'];
@@ -45,26 +45,28 @@ function create_form_shortcode() {
 		$linkedin  = $socials['linkedin'];
 		$youtube   = $socials['youtube'];
 		$twitter   = $socials['twitter'];
+		// $designation = get_post_meta( $post_id, 'medilink_designation', true );
 	} else {
 		// Dejar el post vacío o nulo
 		$post = null;
 		// Si no hay un id, asignar valores vacíos a los campos
-		$title       = '';
-		$about       = '';
-		$degree      = '';
-		$floor       = '';
-		$location    = 'front';
-		$whatsapp    = '';
-		$phone       = '';
-		$email       = '';
-		$website     = '';
-		$doctor_os   = false;
-		$category    = array();
-		$instagram   = '';
-		$facebook    = '';
-		$linkedin    = '';
-		$youtube     = '';
-		$twitter     = '';
+		$title     = '';
+		$category  = array();
+		$degree    = '';
+		$about     = '';
+		$floor     = '';
+		$location  = 'front';
+		$doctor_os = false;
+		$med_group = '';
+		$whatsapp  = '';
+		$phone     = '';
+		$email     = '';
+		$website   = '';
+		$instagram = '';
+		$facebook  = '';
+		$linkedin  = '';
+		$youtube   = '';
+		$twitter   = '';
 		// $designation = '';
 	}
 	// print '<pre>';print_r($post);print '</pre>';die();
@@ -93,7 +95,7 @@ function create_form_shortcode() {
 				<img class="d-inline" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/user.png" alt="<?php esc_html_e( 'figure', 'medilink' ); ?>">
 				<span class="ml-2 align-middle">Tit., Apellido y Nombre</span>
 			</label>
-			<input type="text" id="doctor_title" name="doctor_title" size="40" value="<?php echo esc_attr( $title ); ?>" required>
+			<input type="text" id="doctor_title" name="doctor_title" size="40" placeholder="Dr./Dra. Apellido y Nombre" value="<?php echo esc_attr( $title ); ?>" required>
 		</div>
 		
 		<?php
@@ -122,11 +124,11 @@ function create_form_shortcode() {
 		</div>
 		
 		<div class="npf-degree mb-5 pt-5"><label class="h3" for="doctor_degree">Subspecialidad</label>
-			<input type="text" id="doctor_degree" name="doctor_degree" size="40" value="<?php echo esc_attr( $degree ); ?>" required>
+			<input type="text" id="doctor_degree" name="doctor_degree" size="40" placeholder="Por Ejemplo: Ortodoncia" value="<?php echo esc_attr( $degree ); ?>" required>
 		</div>
 
 		<div class="npf-about mb-5 pt-5"><label class="h3" for="doctor_about">Bio</label>
-				<textarea id="doctor_about" name="doctor_about" cols="40" rows="10" required><?php echo esc_textarea( $about ); ?></textarea>
+				<textarea id="doctor_about" name="doctor_about" cols="40" rows="10" maxlength="300" placeholder="Máximo de 300 caracteres" required><?php echo esc_textarea( $about ); ?></textarea>
 		</div>
 		
 		<div class="location mb-5 pt-5">
@@ -220,6 +222,15 @@ function create_form_shortcode() {
 			?>
 		</div><!-- .consultation-hours -->
 		
+		<div class="npf-medical-group mb-5 pt-5">
+			<label class="h3" for="medical_group">
+				<img class="d-inline" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/user-group.png" alt="<?php esc_html_e( 'figure', 'medilink' ); ?>">
+				<span class="ml-2 align-middle">Grupo médico</span>
+			</label>
+			<span>Formo parte del Staff de:</span>
+			<input type="text" id="medical_group" name="medical_group" size="40" placeholder="Nombre del Instituto, clínica o grupo médico con el que trabaja en Vittalia - (OPCIONAL)" value="<?php echo esc_attr( $med_group ); ?>" required>
+		</div>
+
 		<div class="npf-os mb-5 pt-5">
 			<p class="h3">¿Acepta obras sociales?</p>
 			<label for="doctor_os">Sí

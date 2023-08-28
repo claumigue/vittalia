@@ -29,11 +29,13 @@ function procesar_formulario_nuevo_profesional() {
 		// Validar y sanitizar los datos del formulario
 		$datos_formulario = array(
 			'title'           => sanitize_text_field( $_POST['title'] ),
-			'about'           => sanitize_textarea_field( $_POST['about'] ),
-			// 'designation'     => sanitize_text_field( $_POST['designation'] ),
+			'especialidad_id' => (int) $_POST['especialidad'], // Obtener el ID de la especialidad seleccionada en el formulario
 			'subespecialidad' => sanitize_text_field( $_POST['subespecialidad'] ),
+			'about'           => sanitize_textarea_field( $_POST['about'] ),
 			'floor'           => $floor ? $floor : 2, // Asignar un valor por defecto en caso de que el dato recibido por $_POST[‘floor’] no sea válido
 			'location'        => sanitize_text_field( $_POST['location'] ),
+			'doctor_os'       => filter_var( $_POST['doctor_os'], FILTER_VALIDATE_BOOLEAN ), // Validar el valor del checkbox como booleano
+			'med_group'       => sanitize_text_field( $_POST['med_group'] ),
 			'whatsapp'        => sanitize_text_field( $_POST['whatsapp'] ),
 			'phone'           => sanitize_text_field( $_POST['phone'] ),
 			'email'           => sanitize_email( $_POST['email'] ),
@@ -43,8 +45,7 @@ function procesar_formulario_nuevo_profesional() {
 			'linkedin'        => sanitize_url( $_POST['linkedin'] ),
 			'youtube'         => sanitize_url( $_POST['youtube'] ),
 			'twitter'         => sanitize_url( $_POST['twitter'] ),
-			'doctor_os'       => filter_var( $_POST['doctor_os'], FILTER_VALIDATE_BOOLEAN ), // Validar el valor del checkbox como booleano
-			'especialidad_id' => (int) $_POST['especialidad'], // Obtener el ID de la especialidad seleccionada en el formulario
+			// 'designation'     => sanitize_text_field( $_POST['designation'] ),
 		);
 
 		// Obtener los datos de los horarios
@@ -96,16 +97,17 @@ function procesar_formulario_nuevo_profesional() {
 		$meta_input = array(
 			'medilink_doctor_about_title' => $datos_formulario['title'],
 			'medilink_doctor_about'       => $datos_formulario['about'],
-			// 'medilink_designation'        => $datos_formulario['designation'],
 			'medilink_degree'             => $datos_formulario['subespecialidad'],
+			'medilink_office_floor'       => $datos_formulario['floor'],
+			'medilink_office_location'    => $datos_formulario['location'],
+			'medilink_doctor_os'          => $datos_formulario['doctor_os'],
+			'medilink_medical_group'      => $datos_formulario['med_group'],
 			'medilink_whatsapp'           => $datos_formulario['whatsapp'],
 			'medilink_phone'              => $datos_formulario['phone'],
 			'medilink_email'              => $datos_formulario['email'],
 			'medilink_website'            => $datos_formulario['website'],
-			'medilink_doctor_os'          => $datos_formulario['doctor_os'],
-			'medilink_office_floor'       => $datos_formulario['floor'],
-			'medilink_office_location'    => $datos_formulario['location'],
 			'medilink_doctor_social'      => $socials,
+			// 'medilink_designation'        => $datos_formulario['designation'],
 			// 'medilink_schedule_title'     => 'Horarios de consulta',
 		);
 
@@ -205,6 +207,8 @@ function enviar_correo_nuevo_profesional( $datos, $horarios, $link, $post_action
 	// Añadir los campos que faltan
 	$contenido .= '<li>Piso: ' . esc_html( $datos['floor'] ) . '</li>';
 	$contenido .= '<li>Ubicación: ' . esc_html( $datos['location'] ) . '</li>';
+	$contenido .= '<li>Acepta obras sociales: ' . esc_html( $doctor_os ) . '</li>';
+	$contenido .= '<li>Grupo médico: ' . esc_html( $datos['med_group'] ) . '</li>';
 	$contenido .= '<li>Sitio web: ' . esc_html( $datos['website'] ) . '</li>';
 	$contenido .= '<li>Instagram: ' . esc_html( $datos['instagram'] ) . '</li>';
 	$contenido .= '<li>Facebook: ' . esc_html( $datos['facebook'] ) . '</li>';
@@ -212,7 +216,6 @@ function enviar_correo_nuevo_profesional( $datos, $horarios, $link, $post_action
 	$contenido .= '<li>Youtube: ' . esc_html( $datos['youtube'] ) . '</li>';
 	$contenido .= '<li>Twitter: ' . esc_html( $datos['twitter'] ) . '</li>';
 	$contenido .= '<li>Teléfono: ' . esc_html( $datos['phone'] ) . '</li>';
-	$contenido .= '<li>Acepta obras sociales: ' . esc_html( $doctor_os ) . '</li>';
 	$contenido .= '</ul>';
 
 	// Añadir una tabla con los horarios

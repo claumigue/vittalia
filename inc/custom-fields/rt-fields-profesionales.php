@@ -3,7 +3,7 @@
  *  Agregar campos personalizados adicionales al metabox doctor_info
  */
 function vittalia_add_custom_doctor_info_fields( $fields ) {
-	
+
 	// definir los campos adicionales
 	$new_fields = array(
 		'medilink_whatsapp'        => array(
@@ -23,7 +23,7 @@ function vittalia_add_custom_doctor_info_fields( $fields ) {
 			'label'   => esc_html__( 'Piso', 'medilink-core' ),
 			'type'    => 'number',
 			'default' => '',
-			'desc'    => esc_html__( '(del 2 al 15) ', 'medilink-core' ),
+			'desc'    => esc_html__( '(del 2 al 15)', 'medilink-core' ),
 		),
 		'medilink_office_location' => array(
 			'label'   => esc_html__( 'Ubicación del consultorio', 'medilink-core' ),
@@ -35,8 +35,13 @@ function vittalia_add_custom_doctor_info_fields( $fields ) {
 			),
 			'default' => 'front',
 		),
+		'medilink_medical_group'   => array(
+			'label' => esc_html__( 'Grupo médico', 'medilink-core' ),
+			'type'  => 'text',
+			'desc'  => esc_html__( 'Nombre del Instituto, clínica o grupo médico con el que trabaja en Vittalia.', 'medilink-core' ),
+		),
 	);
-	
+
 	// Añadir los nuevos campos al array de campos existentes
 	$fields['fields'] += $new_fields;
 	// print '<pre>';print_r($fields);print '</pre>';die(); // Imprimir el array de campos (descomentar para depurar)
