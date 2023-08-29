@@ -128,7 +128,7 @@ function create_form_shortcode() {
 		</div>
 
 		<div class="npf-about mb-5 pt-5"><label class="h3" for="doctor_about">Bio</label>
-				<textarea id="doctor_about" name="doctor_about" cols="40" rows="10" maxlength="300" placeholder="Máximo de 300 caracteres" required><?php echo esc_textarea( $about ); ?></textarea>
+				<textarea id="doctor_about" name="doctor_about" cols="40" rows="10" maxlength="1200" placeholder="Máximo de 1200 caracteres" required><?php echo esc_textarea( $about ); ?></textarea>
 		</div>
 		
 		<div class="location mb-5 pt-5">

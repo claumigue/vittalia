@@ -21,20 +21,24 @@ $cpt      = MEDILINK_THEME_CPT_PREFIX;
 // $_education_title             = get_post_meta( $id, "{$cpt}_skill_title", true );
 // $_education                   = get_post_meta( $id, "{$cpt}_doctor_skill", true );
 // $_about_title                 = get_post_meta( $id, "{$cpt}_doctor_about_title", true );
-$thumb_size                   = "{$medilink}-size4";
-$thumb_size6                  = "{$medilink}-size6";
-$id                           = get_the_id();
-$_designation                 = get_post_meta( $id, "{$cpt}_designation", true );
-$_designation                 = get_post_meta( $id, "{$cpt}_designation", true );
-$_degree                      = get_post_meta( $id, "{$cpt}_degree", true );
-$_about                       = get_post_meta( $id, "{$cpt}_doctor_about", true );
-$_phone                       = get_post_meta( $id, "{$cpt}_phone", true );
-$_office                      = get_post_meta( $id, "{$cpt}_office", true );
-$_email                       = get_post_meta( $id, "{$cpt}_email", true );
-$_emergency_cases             = get_post_meta( $id, "{$cpt}_emergency_cases", true );
-$_acepta_obra_social          = get_post_meta( $id, "{$cpt}_doctor_os", true );
-$socials                      = get_post_meta( $id, "{$cpt}_doctor_social", true );
-$social_fields                = Helper::doctor_socials();
+// $_office                      = get_post_meta( $id, "{$cpt}_office", true );
+// $_designation        = get_post_meta( $id, "{$cpt}_designation", true );
+$thumb_size          = "{$medilink}-size4";
+$thumb_size6         = "{$medilink}-size6";
+$id                  = get_the_id();
+$_degree             = get_post_meta( $id, "{$cpt}_degree", true );
+$_about              = get_post_meta( $id, "{$cpt}_doctor_about", true );
+$_phone              = get_post_meta( $id, "{$cpt}_phone", true );
+$_whatsapp           = get_post_meta( $id, "{$cpt}_whatsapp", true );
+$_email              = get_post_meta( $id, "{$cpt}_email", true );
+$_website            = get_post_meta( $id, "{$cpt}_website", true );
+$_emergency_cases    = get_post_meta( $id, "{$cpt}_emergency_cases", true );
+$_office_floor       = get_post_meta( $id, "{$cpt}_office_floor", true );
+$_office_location    = get_post_meta( $id, "{$cpt}_office_location", true );
+$_acepta_obra_social = get_post_meta( $id, "{$cpt}_doctor_os", true );
+$_medical_group      = get_post_meta( $id, "{$cpt}_medical_group", true );
+$socials             = get_post_meta( $id, "{$cpt}_doctor_social", true );
+$social_fields       = Helper::doctor_socials();
 
 $_especialidad = get_the_terms( $id, 'medilink_doctor_category' )[0]->name;
 
@@ -69,49 +73,73 @@ foreach ( $_days as $day_en => $day_es ) {
 			<div class="team-detail-box-layout1">
 				<div class="single-item">
 					<div class="item-content">
-						<h3 class="section-title item-title mb-1"><?php echo esc_html( $_especialidad ); ?></h3>
-						<!-- <h3 class="section-title item-title mb-1"><?php echo esc_html( $_designation ); ?></h3> -->
-						<span class="item-designation text-success"><?php echo esc_html( $_degree ); ?></span>
+						<h3 class="section-title item-cat mb-1"><?php echo esc_html( $_especialidad ); ?></h3>
+						<span class="item-degree text-success"><?php echo esc_html( $_degree ); ?></span>
 					</div>
 				</div>
 				<div class="single-item">
-					<h3 class="section-title title-bar-primary2"><?php the_title(); ?></h3>
+					<h3 class="section-title title-bar-primary2"><?php echo esc_html( 'Bio' ); ?></h3>
 					<?php if ( ! empty( $_about ) ) { ?>
 						<p><?php echo wp_kses_post( $_about ); ?></p>
 					<?php } ?>
-					<?php
-					$os_msg = $_acepta_obra_social ? '<p class="text-primary">Acepta obras sociales</p>' : '<p class="text-danger">No acepta obras sociales</p>';
-					echo $os_msg;
-					?>
+				</div>
+				<div class="single-item">
+					<div class="section-floor d-flex align-items-center text-uppercase">
+						<img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/hospital-dark_blue.png" alt="<?php esc_html_e( 'figure', 'medilink' ); ?>">
+						<?php if ( ! empty( $_office_floor ) ) {
+							echo "<div class='item-floor ml-4'>$_office_floor&#176; piso</div>";
+						} ?>
+						<?php if ( ! empty( $_office_location ) ) {
+							switch ($_office_location) {
+								case 'front':
+									$office_location = 'Frente';
+									break;
+								case 'quiet':
+									$office_location = 'Contrafrente';
+									break;
+								default:
+									$office_location = 'Piso completo';
+									break;
+							}
+							echo "<div class='item-location ml-4'>$office_location</div>";
+						} ?>
+						<?php
+						$acepta_obra_social = $_acepta_obra_social ? 'Sí' : 'No';
+						$os_msg = '<div class="item-os ml-4">Acepta obras sociales: <span>' . $acepta_obra_social . '</span></div>';
+						echo $os_msg;
+						?>
+					</div>
 				</div>
 				<?php if ( ! empty( $_doctor_horarios ) ) { ?>
 					<div class="single-item">
 						<div class="table-responsive">
-							<h3 class="section-title title-bar-primary2"><?php echo esc_html( 'Horarios de consulta' ); ?></h3>
-							<table class="table schedule-table">
+							<h3 class="section-title title-bar-primary2"><?php echo esc_html( 'Horarios de atención' ); ?></h3>
+							<table class="table schedule-table text-uppercase">
 								<thead>
-									<tr>
+									<!-- <tr>
 										<th><?php echo esc_html__( 'Day', 'medilink' ); ?></th>
 										<th><?php echo esc_html__( 'Time', 'medilink' ); ?></th>
 										<th><?php echo esc_html__( 'Time', 'medilink' ); ?></th>
-										<!-- <th><?php echo esc_html__( 'Address', 'medilink' ); ?></th> -->
-									</tr>
+									</tr> -->
 								</thead>
 								<tbody>
 									<?php foreach ( $_doctor_horarios as $schedule ) { ?>
 										<tr>
-											<td><?php echo esc_html( $schedule['day'] ); ?></td>
+											<td><span class="schedule-table-day"><?php echo esc_html( $schedule['day'] ); ?></span></td>
 											<td><?php echo esc_html( $schedule['aa_time'] ); ?> - <?php echo esc_html( $schedule['ab_time'] ); ?></td>
 											<td><?php echo esc_html( $schedule['ba_time'] ); ?> - <?php echo esc_html( $schedule['bb_time'] ); ?></td>
-											<!-- <?php if ( $schedule['address'] ) { ?>
-											<td><?php echo esc_html( $schedule['address'] ); ?></td>
-											<?php } ?> -->
 										</tr>
 									<?php } ?>
 								</tbody>
 							</table>
 						</div>
 					</div>
+				<?php } ?>
+				<?php if ( ! empty( $_medical_group ) ) { ?>
+				<div class="single-item">
+					<h3 class="section-title title-bar-primary2"><?php echo esc_html( 'Grupo médico' ); ?></h3>
+					<p class="item-medgroup">Pertece al Staff de: <span><?php echo esc_html( $_medical_group ); ?></span></p>
+				</div>
 				<?php } ?>
 			</div>
 		</div>
@@ -126,21 +154,31 @@ foreach ( $_days as $day_en => $day_es ) {
 				<?php } ?>
 			</div>
 			<?php $socials = is_array( $socials ) ? array_filter( $socials ) : $socials; ?>
-			<?php if ( ! empty( $_phone ) || ! empty( $_office ) || ! empty( $_email ) || ! empty( $socials ) ) { ?>
+			<?php if ( ! empty( $_whatsapp ) || ! empty( $_phone ) || ! empty( $_email ) || ! empty( $_website ) || ! empty( $socials ) ) { ?>
 				<div class="widgets widget-team-contact">
-					<h3 class="section-title title-bar-primary2"><?php echo esc_html__( 'Personal Info', 'medilink' ); ?></h3>
+					<h3 class="section-title title-bar-primary2"><?php the_title(); ?></h3>
+					<!-- <h3 class="section-title title-bar-primary2"><?php echo esc_html__( 'Personal Info', 'medilink' ); ?></h3> -->
 					<ul>
-						<?php if ( ! empty( $_phone ) ) { ?>
-							<li><?php echo esc_html__( 'Fijo:', 'medilink' ); ?>&nbsp;&nbsp;<span><?php echo esc_html( $_phone ); ?></span></li>
+						<?php if ( ! empty( $_whatsapp ) ) { ?>
+							<li><i class="fab fa-whatsapp"></i>&nbsp;&nbsp;<span><?php echo esc_html( $_whatsapp ); ?></span></li>
 						<?php } ?>
-						<?php if ( ! empty( $_office ) ) { ?>
-							<li><?php echo esc_html__( 'Office:', 'medilink' ); ?><span><?php echo esc_html( $_office ); ?></span></li>
+						<?php if ( ! empty( $_phone ) ) { ?>
+							<li><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;&nbsp;<span><?php echo esc_html( $_phone ); ?></span></li>
 						<?php } ?>
 						<?php if ( ! empty( $_email ) ) { ?>
-							<li><?php echo esc_html__( 'E-mail:', 'medilink' ); ?><span><?php echo esc_html( $_email ); ?></span></li>
+							<li><i class="far fa-envelope" aria-hidden="true"></i><span><?php echo esc_html( $_email ); ?></span></li>
+						<?php } ?>
+						<?php if ( ! empty( $_website ) ) { ?>
+							<li>
+								<i class="fas fa-globe" aria-hidden="true"></i>
+								<span>
+									<a href="<?php echo esc_url( $_website ) ?>" target="_blank"><?php echo esc_html( preg_replace('#^https?://#i', '', $_website) ); ?></a>
+								</span>
+							</li>
 						<?php } ?>
 						<?php if ( ! empty( $socials ) && RDTheme::$options['doctor_arc_social_display'] ) : ?>
-							<li class="d-flex"><?php echo esc_html__( 'Redes:', 'medilink' ); ?>
+							<li>
+								<h3>Redes</h3>
 								<ul class="widget-social">
 									<?php foreach ( $socials as $key => $social ) : ?>
 										<?php if ( ! empty( $social ) ) : ?>
@@ -155,7 +193,7 @@ foreach ( $_days as $day_en => $day_es ) {
 					</ul>
 				</div>
 			<?php } ?>
-			<?php if ( $_phone ) { ?>
+			<!-- <?php if ( $_phone ) { ?>
 				<div class="widgets widget-call-to-action">
 					<div class="media">
 						<img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/hospital-reception.png" alt="<?php esc_html_e( 'figure', 'medilink' ); ?>">
@@ -165,7 +203,7 @@ foreach ( $_days as $day_en => $day_es ) {
 						</div>
 					</div>
 				</div>
-			<?php } ?>
+			<?php } ?> -->
 		</div>
 	</div>
 
