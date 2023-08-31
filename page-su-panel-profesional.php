@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  Template Name: Nuevo Profesional
+ *  Template Name: Su Panel Profesional
  */
 
  
