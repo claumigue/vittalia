@@ -27,17 +27,17 @@ function create_form_shortcode() {
 		// Obtener los valores de los campos personalizados del post
 		$title = get_the_title( $post_id );
 		// Obtener la categoría del post
-		$category  = wp_get_object_terms( $post_id, 'medilink_doctor_category' );
-		$degree    = get_post_meta( $post_id, 'medilink_degree', true );
-		$about     = get_post_meta( $post_id, 'medilink_doctor_about', true );
-		$floor     = get_post_meta( $post_id, 'medilink_office_floor', true );
-		$location  = get_post_meta( $post_id, 'medilink_office_location', true );
-		$doctor_os = get_post_meta( $post_id, 'medilink_doctor_os', true ) ? true : false;
-		$med_group = get_post_meta( $post_id, 'medilink_medical_group', true );
-		$whatsapp  = get_post_meta( $post_id, 'medilink_whatsapp', true );
-		$phone     = get_post_meta( $post_id, 'medilink_phone', true );
-		$email     = get_post_meta( $post_id, 'medilink_email', true );
-		$website   = get_post_meta( $post_id, 'medilink_website', true );
+		$category    = wp_get_object_terms( $post_id, 'medilink_doctor_category' );
+		$designation = get_post_meta( $post_id, 'medilink_designation', true );
+		$about       = get_post_meta( $post_id, 'medilink_doctor_about', true );
+		$floor       = get_post_meta( $post_id, 'medilink_office_floor', true );
+		$location    = get_post_meta( $post_id, 'medilink_office_location', true );
+		$doctor_os   = get_post_meta( $post_id, 'medilink_doctor_os', true ) ? true : false;
+		$med_group   = get_post_meta( $post_id, 'medilink_medical_group', true );
+		$whatsapp    = get_post_meta( $post_id, 'medilink_whatsapp', true );
+		$phone       = get_post_meta( $post_id, 'medilink_phone', true );
+		$email       = get_post_meta( $post_id, 'medilink_email', true );
+		$website     = get_post_meta( $post_id, 'medilink_website', true );
 		// Obtener los datos de las redes sociales del post
 		$socials   = get_post_meta( $post_id, 'medilink_doctor_social', true );
 		$instagram = $socials['instagram'];
@@ -45,29 +45,29 @@ function create_form_shortcode() {
 		$linkedin  = $socials['linkedin'];
 		$youtube   = $socials['youtube'];
 		$twitter   = $socials['twitter'];
-		// $designation = get_post_meta( $post_id, 'medilink_designation', true );
+		// $degree    = get_post_meta( $post_id, 'medilink_degree', true );
 	} else {
 		// Dejar el post vacío o nulo
 		$post = null;
 		// Si no hay un id, asignar valores vacíos a los campos
-		$title     = '';
-		$category  = array();
-		$degree    = '';
-		$about     = '';
-		$floor     = '';
-		$location  = 'front';
-		$doctor_os = false;
-		$med_group = '';
-		$whatsapp  = '';
-		$phone     = '';
-		$email     = '';
-		$website   = '';
-		$instagram = '';
-		$facebook  = '';
-		$linkedin  = '';
-		$youtube   = '';
-		$twitter   = '';
-		// $designation = '';
+		$title       = '';
+		$category    = array();
+		$designation = '';
+		$about       = '';
+		$floor       = '';
+		$location    = 'front';
+		$doctor_os   = false;
+		$med_group   = '';
+		$whatsapp    = '';
+		$phone       = '';
+		$email       = '';
+		$website     = '';
+		$instagram   = '';
+		$facebook    = '';
+		$linkedin    = '';
+		$youtube     = '';
+		$twitter     = '';
+		// $degree    = '';
 	}
 	// print '<pre>';print_r($post);print '</pre>';die();
 
@@ -92,7 +92,7 @@ function create_form_shortcode() {
 		<!-- Añadir los demás campos del formulario -->
 		<div class="npf-title mb-5 pt-5">
 			<label class="h3" for="doctor_title">
-				<img class="d-inline" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/user.png" alt="<?php esc_html_e( 'figure', 'medilink' ); ?>">
+				<img class="d-inline" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/svg/i-user.svg" alt="<?php esc_html_e( 'figure', 'medilink' ); ?>">
 				<span class="ml-2 align-middle">Tit., Apellido y Nombre</span>
 			</label>
 			<input type="text" id="doctor_title" name="doctor_title" size="40" placeholder="Dr./Dra. Apellido y Nombre" value="<?php echo esc_attr( $title ); ?>" required>
@@ -123,8 +123,8 @@ function create_form_shortcode() {
 			<?php echo $especialidades; ?>
 		</div>
 		
-		<div class="npf-degree mb-5 pt-5"><label class="h3" for="doctor_degree">Subspecialidad</label>
-			<input type="text" id="doctor_degree" name="doctor_degree" size="40" placeholder="Por Ejemplo: Ortodoncia" value="<?php echo esc_attr( $degree ); ?>" required>
+		<div class="npf-designation mb-5 pt-5"><label class="h3" for="doctor_designation">Subspecialidad</label>
+			<input type="text" id="doctor_designation" name="doctor_designation" size="40" placeholder="Por Ejemplo: Ortodoncia" value="<?php echo esc_attr( $designation ); ?>" required>
 		</div>
 
 		<div class="npf-about mb-5 pt-5"><label class="h3" for="doctor_about">Bio</label>
@@ -133,7 +133,7 @@ function create_form_shortcode() {
 		
 		<div class="location mb-5 pt-5">
 			<p class="h3">
-				<img class="d-inline" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/building.png" alt="<?php esc_html_e( 'figure', 'medilink' ); ?>">
+				<img class="d-inline" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/svg/i-building.svg" alt="<?php esc_html_e( 'figure', 'medilink' ); ?>">
 				<span class="ml-2 align-middle">Ubicación</span>
 			</p>
 			<div class="d-flex flex-wrap align-items-baseline">
@@ -151,7 +151,7 @@ function create_form_shortcode() {
 
 		<div class="consultation-hours pt-5">
 			<p class="h3">
-				<img class="d-inline" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/almanac.png" alt="<?php esc_html_e( 'figure', 'medilink' ); ?>">
+				<img class="d-inline" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/svg/i-calendar.svg" alt="<?php esc_html_e( 'figure', 'medilink' ); ?>">
 				<span class="ml-2 align-middle">Días y horarios de atención</span>
 			</p>
 			<?php
@@ -199,20 +199,20 @@ function create_form_shortcode() {
 					<input type='hidden' id='{$day_en}-hidden' name='$day_en' value='false'>
 					<div class='time'>
 						<div class='start-time'>
-							<label for='{$day_en}_start_a'>A-desde:</label>
+							<label for='{$day_en}_start_a'>Desde:</label>
 							<input type='time' id='{$day_en}_start_a' name='{$day_en}_start_a' min='08:00' max='22:00' value='$start_a'>
 						</div>
 						<div class='end-time'>
-							<label for='{$day_en}_end_a'>A-hasta:</label>
+							<label for='{$day_en}_end_a'>Hasta:</label>
 							<input type='time' id='{$day_en}_end_a' name='{$day_en}_end_a' min='08:00' max='22:00' value='$end_a'>
 						</div>
 						<br>
 						<div class='start-time'>
-							<label for='{$day_en}_start_b'>B-desde:</label>
+							<label for='{$day_en}_start_b'>Desde:</label>
 							<input type='time' id='{$day_en}_start_b' name='{$day_en}_start_b' min='08:00' max='22:00'" . disabled( ! $checked, true, false ) . " value='$start_b'>
 						</div>
 						<div class='end-time'>
-							<label for='{$day_en}_end_b'>B-hasta:</label>
+							<label for='{$day_en}_end_b'>Hasta:</label>
 							<input type='time' id='{$day_en}_end_b' name='{$day_en}_end_b' min='08:00' max='22:00'" . disabled( ! $checked, true, false ) . " value='$end_b'>
 						</div>
 					</div>
@@ -224,7 +224,7 @@ function create_form_shortcode() {
 		
 		<div class="npf-medical-group mb-5 pt-5">
 			<label class="h3" for="medical_group">
-				<img class="d-inline" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/img/user-group.png" alt="<?php esc_html_e( 'figure', 'medilink' ); ?>">
+				<img class="d-inline" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/svg/i-group.svg" alt="<?php esc_html_e( 'figure', 'medilink' ); ?>">
 				<span class="ml-2 align-middle">Grupo médico</span>
 			</label>
 			<span>Formo parte del Staff de:</span>

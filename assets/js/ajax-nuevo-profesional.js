@@ -52,7 +52,7 @@ jQuery(document).ready(function ($) {
             _ajax_nonce: ajax_object.nonce,
             title: $('#doctor_title').val(),
             especialidad: $('#doctor_category').val(),
-            subespecialidad: $('#doctor_degree').val(),
+            subespecialidad: $('#doctor_designation').val(),
             about: $('#doctor_about').val(),
             floor: $('#office_floor').val(),
             location: $('input:radio[name="office_location"]:checked').val(),
@@ -68,7 +68,6 @@ jQuery(document).ready(function ($) {
             youtube: $('#doctor_youtube').val(),
             twitter: $('#doctor_twitter').val(),
             days: days_data,
-            // designation: $('#doctor_designation').val(),
         };
 
         // Si hay un ID del post, añadirlo al objeto data

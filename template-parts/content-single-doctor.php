@@ -22,11 +22,11 @@ $cpt      = MEDILINK_THEME_CPT_PREFIX;
 // $_education                   = get_post_meta( $id, "{$cpt}_doctor_skill", true );
 // $_about_title                 = get_post_meta( $id, "{$cpt}_doctor_about_title", true );
 // $_office                      = get_post_meta( $id, "{$cpt}_office", true );
-// $_designation        = get_post_meta( $id, "{$cpt}_designation", true );
+// $_degree                      = get_post_meta( $id, "{$cpt}_degree", true );
 $thumb_size          = "{$medilink}-size4";
 $thumb_size6         = "{$medilink}-size6";
 $id                  = get_the_id();
-$_degree             = get_post_meta( $id, "{$cpt}_degree", true );
+$_designation        = get_post_meta( $id, "{$cpt}_designation", true );
 $_about              = get_post_meta( $id, "{$cpt}_doctor_about", true );
 $_phone              = get_post_meta( $id, "{$cpt}_phone", true );
 $_whatsapp           = get_post_meta( $id, "{$cpt}_whatsapp", true );
@@ -74,7 +74,7 @@ foreach ( $_days as $day_en => $day_es ) {
 				<div class="single-item">
 					<div class="item-content">
 						<h3 class="section-title item-cat mb-1"><?php echo esc_html( $_especialidad ); ?></h3>
-						<span class="item-degree text-success"><?php echo esc_html( $_degree ); ?></span>
+						<span class="item-designation text-success"><?php echo esc_html( $_designation ); ?></span>
 					</div>
 				</div>
 				<div class="single-item">

@@ -45,7 +45,6 @@ function procesar_formulario_nuevo_profesional() {
 			'linkedin'        => sanitize_url( $_POST['linkedin'] ),
 			'youtube'         => sanitize_url( $_POST['youtube'] ),
 			'twitter'         => sanitize_url( $_POST['twitter'] ),
-			// 'designation'     => sanitize_text_field( $_POST['designation'] ),
 		);
 
 		// Obtener los datos de los horarios
@@ -97,7 +96,7 @@ function procesar_formulario_nuevo_profesional() {
 		$meta_input = array(
 			'medilink_doctor_about_title' => $datos_formulario['title'],
 			'medilink_doctor_about'       => $datos_formulario['about'],
-			'medilink_degree'             => $datos_formulario['subespecialidad'],
+			'medilink_designation'        => $datos_formulario['subespecialidad'],
 			'medilink_office_floor'       => $datos_formulario['floor'],
 			'medilink_office_location'    => $datos_formulario['location'],
 			'medilink_doctor_os'          => $datos_formulario['doctor_os'],
@@ -107,7 +106,6 @@ function procesar_formulario_nuevo_profesional() {
 			'medilink_email'              => $datos_formulario['email'],
 			'medilink_website'            => $datos_formulario['website'],
 			'medilink_doctor_social'      => $socials,
-			// 'medilink_designation'        => $datos_formulario['designation'],
 			// 'medilink_schedule_title'     => 'Horarios de consulta',
 		);
 
@@ -201,7 +199,6 @@ function enviar_correo_nuevo_profesional( $datos, $horarios, $link, $post_action
 	$contenido .= '<ul>';
 	$contenido .= '<li>Título: ' . esc_html( $datos['title'] ) . '</li>';
 	$contenido .= '<li>Acerca de: ' . esc_html( $datos['about'] ) . '</li>';
-	// $contenido .= '<li>Designación: ' . esc_html( $datos['designation'] ) . '</li>';
 	$contenido .= '<li>Especialidad: ' . esc_html( $especialidad ) . '</li>';
 	$contenido .= '<li>Subespecialidad: ' . esc_html( $datos['subespecialidad'] ) . '</li>';
 	// Añadir los campos que faltan
