@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  Template Name: Su Panel Profesional
+ *  Template Name: Panel Profesional
  */
 
  
