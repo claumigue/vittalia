@@ -107,7 +107,9 @@ jQuery(document).ready(function ($) {
 			.always(function () {
 				console.log("The request is complete!");
 				$('#submit').prop('disabled', false);
-				$('#nuevoProfesional')[0].reset();
+
+				// Resetear el formulario
+				// $('#nuevoProfesional')[0].reset();
 			})
 	});
 
