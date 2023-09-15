@@ -194,6 +194,17 @@ function enviar_correo_nuevo_profesional( $datos, $horarios, $link, $post_action
 	// Definir el contenido del correo en formato HTML
 	$especialidad = get_term( $datos['especialidad_id'], 'medilink_doctor_category' )->name;
 	$doctor_os    = $datos['doctor_os'] ? 'Sí' : 'No';
+	switch ($datos['location']) {
+		case 'front':
+			$ubicacion = 'Frente';
+			break;
+		case 'quiet':
+			$ubicacion = 'Contrafrente';
+			break;
+		default:
+			$ubicacion = 'Piso completo';
+			break;
+	}
 
 	$contenido  = '<p>Se ha ' . ( $post_action == 'create' ? 'creado' : 'actualizado' ) . ' un post de tipo "medilink_doctor" desde el frontend con los siguientes datos:</p>';
 	$contenido .= '<ul>';
@@ -203,7 +214,7 @@ function enviar_correo_nuevo_profesional( $datos, $horarios, $link, $post_action
 	$contenido .= '<li>Subespecialidad: ' . esc_html( $datos['subespecialidad'] ) . '</li>';
 	// Añadir los campos que faltan
 	$contenido .= '<li>Piso: ' . esc_html( $datos['floor'] ) . '</li>';
-	$contenido .= '<li>Ubicación: ' . esc_html( $datos['location'] ) . '</li>';
+	$contenido .= '<li>Ubicación: ' . esc_html( $ubicacion ) . '</li>';
 	$contenido .= '<li>Acepta obras sociales: ' . esc_html( $doctor_os ) . '</li>';
 	$contenido .= '<li>Grupo médico: ' . esc_html( $datos['med_group'] ) . '</li>';
 	$contenido .= '<li>Sitio web: ' . esc_html( $datos['website'] ) . '</li>';
@@ -262,7 +273,8 @@ function enviar_correo_nuevo_profesional( $datos, $horarios, $link, $post_action
 	// Definir las cabeceras del correo
 	$cabeceras = array(
 		'From: Vitttalia Web <noreply@vittalia.local>', // Indicar el remitente
-		'Reply-To: Claudio <claumigue@gmail.com>', // Indicar a dónde responder
+		"Reply-To: Nico <$destinatario>", // Indicar a dónde responder
+		'Cc: Claudio <claumigue@gmail.com>', // Indicar a dónde responder
 	);
 
 	// Enviar el correo usando la función wp_mail() y guardar el resultado
