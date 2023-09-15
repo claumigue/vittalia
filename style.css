@@ -89,7 +89,8 @@ Tags:           one-column, two-columns, right-sidebar, accessibility-ready, cus
 .day-service-hours {
     display: flex;
     align-items: baseline;
-    height: 100px;
+    /* height: 100px; */
+    margin-bottom: 15px;
 }
 
 .day-service-hours label {
@@ -111,12 +112,12 @@ Tags:           one-column, two-columns, right-sidebar, accessibility-ready, cus
 
 .start-time {
     min-width: 50%;
-    margin-bottom: 3px;
+    margin-bottom: 10px;
 }
 
 .end-time {
     min-width: 50%;
-    margin-bottom: 3px;
+    margin-bottom: 10px;
 }
 
 @media (max-width: 411px) {
