@@ -2,9 +2,12 @@
 
 function create_form_shortcode( $atts ) {
 
-	$a = shortcode_atts( array(
-		'img' => ''
-		), $atts );
+	$a = shortcode_atts(
+		array(
+			'img' => '',
+		),
+		$atts
+	);
 
 	// Obtener el ID del usuario actual
 	$user_id = get_current_user_id();
@@ -78,17 +81,10 @@ function create_form_shortcode( $atts ) {
 	// Encolar el script
 	wp_enqueue_script( 'fnp-fields', get_stylesheet_directory_uri() . '/assets/js/fields-nuevo-profesional.js', array(), '1.0.0', true );
 
-	// Crear un WP nonce con el nombre 'crear_profesional'
-	// $nonce = wp_create_nonce('crear_profesional');
-
 	// Start output buffering
 	ob_start();
 	?>
 	<form id="nuevoProfesional" method="post" action="" class="wpcf7-form np-form">
-		<!-- Añadir el WP nonce al formulario como un campo oculto -->
-		<?php
-		// wp_nonce_field('crear_profesional', 'profesional_nonce');
-		?>
 
 		<!-- Añadir un campo oculto con el ID del post, si existe, o con un valor vacío, si no existe -->
 		<input type="hidden" id="post_id" name="post_id" value="<?php echo $post ? esc_attr( $post_id ) : ''; ?>">
@@ -292,9 +288,18 @@ function create_form_shortcode( $atts ) {
 			</div>
 		</div>
 		
-		<!-- Añadir un botón para enviar el formulario -->
-		<p><button id="submit" type="submit"><?php echo $post_id ? 'Actualizar datos' : 'Enviar datos'; ?></button></p>
-		
+		<div class="npf-buttons">
+			<!-- Añadir un botón para enviar el formulario -->
+			<button id="submit" type="submit"><?php echo $post_id ? 'Actualizar datos' : 'Enviar datos'; ?></button>
+
+			<!-- Añadir un botón para ver el post -->
+			<?php
+			if ( $post_id ) {
+				echo '<a class="btn-extra" href="' . esc_url( get_permalink( $post_id ) ) . '" aria-label="Ver mi página" target="_blank"><span>Ver mi página</span></a>';
+			}
+			?>
+		</div>
+
 		<!-- Añadir un campo para los mensajes de confirmación y error -->
 		<p class="status-msg" style="display: none"></p>
 
