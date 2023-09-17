@@ -1,6 +1,10 @@
 <?php
 
-function create_form_shortcode() {
+function create_form_shortcode( $atts ) {
+
+	$a = shortcode_atts( array(
+		'img' => ''
+		), $atts );
 
 	// Obtener el ID del usuario actual
 	$user_id = get_current_user_id();
@@ -88,12 +92,15 @@ function create_form_shortcode() {
 
 		<!-- Añadir un campo oculto con el ID del post, si existe, o con un valor vacío, si no existe -->
 		<input type="hidden" id="post_id" name="post_id" value="<?php echo $post ? esc_attr( $post_id ) : ''; ?>">
-
+		
+		<!-- Añadir un campo oculto con el ID de la imagen por defecto -->
+		<input type="hidden" id="thumbnail_id" name="thumbnail_id" value="<?php echo esc_attr( $a['img'] ); ?>">
+		
 		<!-- Añadir los demás campos del formulario -->
 		<div class="npf-title mb-5 pt-5">
 			<label class="h3" for="doctor_title">
 				<img class="d-inline" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/svg/i-user.svg" alt="<?php esc_html_e( 'figure', 'medilink' ); ?>">
-				<span class="ml-2 align-middle">Tit., Apellido y Nombre</span>
+				<span class="ml-2 align-middle">Tít. Apellido y Nombre</span>
 			</label>
 			<input type="text" id="doctor_title" name="doctor_title" size="40" placeholder="Dr./Dra. Apellido y Nombre" value="<?php echo esc_attr( $title ); ?>" required>
 		</div>
@@ -123,7 +130,7 @@ function create_form_shortcode() {
 			<?php echo $especialidades; ?>
 		</div>
 		
-		<div class="npf-designation mb-5 pt-5"><label class="h3" for="doctor_designation">Subspecialidad</label>
+		<div class="npf-designation mb-5 pt-5"><label class="h3" for="doctor_designation">Subespecialidad</label>
 			<input type="text" id="doctor_designation" name="doctor_designation" size="40" placeholder="Por Ejemplo: Ortodoncia" value="<?php echo esc_attr( $designation ); ?>" required>
 		</div>
 
@@ -139,7 +146,7 @@ function create_form_shortcode() {
 			<div class="d-flex flex-wrap align-items-baseline">
 				<div class="office-floor d-flex align-items-baseline">
 					<label for="office_floor">Piso</label>
-					<input type="number" id="office_floor" name="office_floor" min="2" max="15" placeholder="2" value="<?php echo esc_attr( $floor ); ?>" required>
+					<input type="number" id="office_floor" name="office_floor" min="2" max="15" value="<?php echo esc_attr( $floor ); ?>" required>
 				</div><!-- .office-floor -->
 				<div class="office-location">
 					<label class="d-inline" for="front"><input type="radio" id="front" name="office_location" value="front" <?php checked( $location, 'front' ); ?>> Frente</label>
@@ -228,7 +235,7 @@ function create_form_shortcode() {
 				<span class="ml-2 align-middle">Grupo médico</span>
 			</label>
 			<span>Formo parte del Staff de:</span>
-			<input type="text" id="medical_group" name="medical_group" size="40" placeholder="Nombre del Instituto, clínica o grupo médico con el que trabaja en Vittalia - (OPCIONAL)" value="<?php echo esc_attr( $med_group ); ?>" required>
+			<input type="text" id="medical_group" name="medical_group" size="40" placeholder="Nombre del Instituto, clínica o grupo médico con el que trabaja en Vittalia - (OPCIONAL)" value="<?php echo esc_attr( $med_group ); ?>">
 		</div>
 
 		<div class="npf-os mb-5 pt-5">
@@ -240,7 +247,7 @@ function create_form_shortcode() {
 		<div class="npf-info">
 			<p class="h3">Info de contacto para pacientes</p>
 			<p><label for="doctor_whatsapp"><i class="fab fa-whatsapp" aria-hidden="true"></i> Celular
-			<input type="tel" id="doctor_whatsapp" name="doctor_whatsapp" minlength="10" placeholder="381-444-4444" list="defaultTels" value="<?php echo esc_attr( $whatsapp ); ?>"></label>
+			<input type="tel" id="doctor_whatsapp" name="doctor_whatsapp" minlength="10" placeholder="381-444-4444" list="defaultTels" required value="<?php echo esc_attr( $whatsapp ); ?>"></label>
 			</p>
 			
 			<p><label for="doctor_phone"><i class="fa fa-phone" aria-hidden="true"></i> Fijo
@@ -254,28 +261,30 @@ function create_form_shortcode() {
 			</datalist>
 	
 			<p><label for="doctor_email"><i class="far fa-envelope" aria-hidden="true"></i> E-mail
-			<input type="email" id="doctor_email" name="doctor_email" size="40" value="<?php echo esc_attr( $email ); ?>"></label>
+			<input type="email" id="doctor_email" name="doctor_email" size="40" placeholder="(OPCIONAL)" value="<?php echo esc_attr( $email ); ?>"></label>
 			</p>
 	
 			<p><label for="doctor_web"><i class="fas fa-globe"></i> Sitio web
 			<input type="url" id="doctor_web" name="doctor_web" size="40" placeholder="(OPCIONAL)" value="<?php echo esc_attr( $website ); ?>"></label>
 			</p>
 			
-			<div class="redes-sociales"><p class="h4">Redes sociales</p>
+			<div class="redes-sociales">
+				<p class="h4">Redes sociales</p>
+				<p><small>Escriba el link completo de su red social incluyendo https://</small></p>
 				<p><label for="doctor_instagram"><i class="fab fa-instagram"></i> Instagram
-					<input type="url" id="doctor_instagram" name="doctor_instagram" size="40" value="<?php echo esc_attr( $instagram ); ?>"></label>
+					<input type="url" id="doctor_instagram" name="doctor_instagram" size="40" placeholder="ej: https://www.instagram.com/micuenta/" value="<?php echo esc_attr( $instagram ); ?>"></label>
 				</p>
 				<p><label for="doctor_facebook"><i class="fab fa-facebook-f"></i> Facebook
-					<input type="url" id="doctor_facebook" name="doctor_facebook" size="40" value="<?php echo esc_attr( $facebook ); ?>"></label>
+					<input type="url" id="doctor_facebook" name="doctor_facebook" size="40"  placeholder="ej: https://www.facebook.com/micuenta"  value="<?php echo esc_attr( $facebook ); ?>"></label>
 				</p>
 				<p><label for="doctor_linkedin"><i class="fab fa-linkedin-in"></i> Linkedin
-					<input type="url" id="doctor_linkedin" name="doctor_linkedin" size="40" value="<?php echo esc_attr( $linkedin ); ?>"></label>
+					<input type="url" id="doctor_linkedin" name="doctor_linkedin" size="40" placeholder="ej: https://www.linkedin.com/in/micuenta/" value="<?php echo esc_attr( $linkedin ); ?>"></label>
 				</p>
 				<p><label for="doctor_youtube"><i class="fab fa-youtube"></i> Youtube
-					<input type="url" id="doctor_youtube" name="doctor_youtube" size="40" value="<?php echo esc_attr( $youtube ); ?>"></label>
+					<input type="url" id="doctor_youtube" name="doctor_youtube" size="40" placeholder="ej: https://www.youtube.com/@micuenta"  value="<?php echo esc_attr( $youtube ); ?>"></label>
 				</p>
 				<p><label for="doctor_twitter"><i class="fab fa-twitter"></i> Twitter
-					<input type="url" id="doctor_twitter" name="doctor_twitter" size="40" value="<?php echo esc_attr( $twitter ); ?>"></label>
+					<input type="url" id="doctor_twitter" name="doctor_twitter" size="40" placeholder="ej: https://twitter.com/micuenta" value="<?php echo esc_attr( $twitter ); ?>"></label>
 				</p>
 				<!-- <p><label for="doctor_twitter"><img class="d-inline" style="max-width: 1em;" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/svg/x-twitter-2.svg" alt="<?php esc_html_e( 'icon', 'medilink' ); ?>"> Twitter
 					<input type="url" id="doctor_twitter" name="doctor_twitter" size="40" value="<?php echo esc_attr( $twitter ); ?>"></label>

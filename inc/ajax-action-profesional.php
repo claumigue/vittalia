@@ -111,8 +111,7 @@ function procesar_formulario_nuevo_profesional() {
 
 		$meta_input += $days_sanitized;
 
-		$thumbnail_id = 5273; // ID de la imagen destacada por defecto (local)
-		// $thumbnail_id = 5342; // ID de la imagen destacada por defecto (production)
+		$thumbnail_id = isset( $_POST['thumbnail'] ) ? (int) $_POST['thumbnail'] : 0;
 
 		// Obtener el ID del post si existe
 		$post_id = isset( $_POST['id'] ) ? (int) $_POST['id'] : 0;
@@ -132,11 +131,16 @@ function procesar_formulario_nuevo_profesional() {
 		if ( $post_id ) {
 			// Si hay un ID, actualizar el post existente con los nuevos datos
 			$_post_array['ID'] = $post_id;
-			$profesional_id    = wp_update_post( $_post_array );
-			$post_action       = 'update';
+
+			// Limpiar campos de horarios 
+			vittalia_delete_horarios_postmeta( $post_id );
+
+			$profesional_id = wp_update_post( $_post_array );
+			$post_action    = 'update';
 		} else {
 			// Si no hay un ID, agregar la imagen destacada por defecto
 			$_post_array['_thumbnail_id'] = $thumbnail_id;
+			
 			// Crear un nuevo post con los datos del formulario
 			$profesional_id = wp_insert_post( $_post_array );
 			$post_action    = 'create';
@@ -191,10 +195,15 @@ function enviar_correo_nuevo_profesional( $datos, $horarios, $link, $post_action
 		$asunto = 'Profesional actualizado desde el frontend';
 	}
 
+	// Obtener la URL del sitio
+	$site_url = get_site_url();
+	// Extraer el dominio de la URL
+	$site_domain = parse_url( $site_url, PHP_URL_HOST );
+
 	// Definir el contenido del correo en formato HTML
 	$especialidad = get_term( $datos['especialidad_id'], 'medilink_doctor_category' )->name;
 	$doctor_os    = $datos['doctor_os'] ? 'Sí' : 'No';
-	switch ($datos['location']) {
+	switch ( $datos['location'] ) {
 		case 'front':
 			$ubicacion = 'Frente';
 			break;
@@ -272,7 +281,7 @@ function enviar_correo_nuevo_profesional( $datos, $horarios, $link, $post_action
 
 	// Definir las cabeceras del correo
 	$cabeceras = array(
-		'From: Vitttalia Web <noreply@vittalia.local>', // Indicar el remitente
+		"From: Vitttalia Web <noreply@$site_domain>", // Indicar el remitente
 		"Reply-To: Nico <$destinatario>", // Indicar a dónde responder
 		'Cc: Claudio <claumigue@gmail.com>', // Indicar a dónde responder
 	);

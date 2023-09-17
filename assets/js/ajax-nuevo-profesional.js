@@ -46,6 +46,9 @@ jQuery(document).ready(function ($) {
         // Obtener el ID del post si existe
         let post_id = $('#post_id').val();
 
+        // Obtener el ID del post si existe
+        let thumbnail_id = $('#thumbnail_id').val();
+
         // Crear un objeto con los datos del formulario y el ID del post si existe
         let data = {
             action: 'vittalia_ajax_form',
@@ -73,6 +76,11 @@ jQuery(document).ready(function ($) {
         // Si hay un ID del post, añadirlo al objeto data
         if (post_id) {
             data.id = post_id;
+        }
+
+        // Si hay un ID de la imagen por defecto añadirlo al objeto data
+        if (thumbnail_id) {
+            data.thumbnail = thumbnail_id;
         }
 
         // Enviar la solicitud ajax con el objeto data
