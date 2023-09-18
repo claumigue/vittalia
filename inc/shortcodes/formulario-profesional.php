@@ -4,7 +4,8 @@ function create_form_shortcode( $atts ) {
 
 	$a = shortcode_atts(
 		array(
-			'img' => '',
+			'img'   => '',
+			'infob' => '',
 		),
 		$atts
 	);
@@ -282,11 +283,19 @@ function create_form_shortcode( $atts ) {
 				<p><label for="doctor_twitter"><i class="fab fa-twitter"></i> Twitter
 					<input type="url" id="doctor_twitter" name="doctor_twitter" size="40" placeholder="ej: https://twitter.com/micuenta" value="<?php echo esc_attr( $twitter ); ?>"></label>
 				</p>
-				<!-- <p><label for="doctor_twitter"><img class="d-inline" style="max-width: 1em;" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/svg/x-twitter-2.svg" alt="<?php esc_html_e( 'icon', 'medilink' ); ?>"> Twitter
-					<input type="url" id="doctor_twitter" name="doctor_twitter" size="40" value="<?php echo esc_attr( $twitter ); ?>"></label>
-				</p> -->
 			</div>
 		</div>
+
+		<?php if ( $a['infob'] ) { ?>
+			<div class="infobox infobox-bottom d-flex align-items-center">
+				<div class="infobox-child">
+					<i class="fas fa-info-circle"></i>
+				</div>
+				<div class="infobox-child">
+					<?php echo esc_html( $a['infob'] ); ?>
+				</div>
+			</div>
+		<?php } ?>
 		
 		<div class="npf-buttons">
 			<!-- Añadir un botón para enviar el formulario -->
