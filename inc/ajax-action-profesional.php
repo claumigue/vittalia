@@ -156,12 +156,12 @@ function procesar_formulario_nuevo_profesional() {
 			// Cambiar el mensaje según si hay un ID o no
 			$res = $enviado ? array(
 				'status' => 1,
-				'msg'    => $post_id ? 'La página del profesional se ha actualizado correctamente y se ha dado aviso al administrador.' : 'La página del profesional se ha creado correctamente y se ha dado aviso al administrador.',
+				'msg'    => $post_id ? 'La página del profesional se ha actualizado correctamente y se ha dado aviso al administrador. Una vez que la apruebe estará visible en el sitio web.' : 'La página del profesional se ha creado correctamente y se ha dado aviso al administrador. Una vez que la apruebe estará visible en el sitio web.',
 				'link'   => $profesional_link,
 			)
 				: array(
 					'status' => 0,
-					'msg'    => $post_id ? 'La página del profesional se ha actualizado correctamente pero no se ha podido dar aviso al administrador.' : 'La página del profesional se ha creado correctamente pero no se ha podido dar aviso al administrador.',
+					'msg'    => $post_id ? 'La página del profesional se ha actualizado correctamente pero no se ha podido enviar el mail de aviso. Contacta con el administrador.' : 'La página del profesional se ha creado correctamente pero no se ha podido enviar el mail de aviso. Contacta con el administrador.',
 					'link'   => $profesional_link,
 				);
 		} else {
