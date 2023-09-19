@@ -2,7 +2,9 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     
-    /* Ocultar o mostrar el campo oculto según el estado del checkbox */
+    /** 
+     * Ocultar o mostrar el campo oculto según el estado del checkbox 
+     */
     function toggleHidden(checkbox) {
         const hidden = document.getElementById(checkbox.id + "-hidden");
         const timeStartA = document.getElementById(checkbox.id + "_start_a");
@@ -39,6 +41,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    
+    /**
+     *  Validar que la hora de inicio y fin sea coherente para cada segmento horario 
+     */
     // Función auxiliar para habilitar o deshabilitar los inputs del segmento B
     function toggleSegmentB(startIdA, endIdA, startIdB, endIdB) {
         // Seleccionar los inputs correspondientes a los ids
@@ -62,7 +68,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    /* Validar que el tiempo de fin sea mayor o igual al tiempo de inicio en cada día */
     // Seleccionar todos los elementos input de tipo time
     const timeInputs = document.querySelectorAll('.time input[type="time"]');
 

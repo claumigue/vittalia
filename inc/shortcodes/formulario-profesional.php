@@ -175,6 +175,12 @@ function create_form_shortcode( $atts ) {
 				// Obtener el nombre del día en inglés y en minúsculas
 				$day_en = strtolower( $day_en );
 
+				// Determinar los días que no están habilitados
+				$disabled_day = in_array($day_en,['sun']) ? 'disabled' : '';
+
+				$min_time = $day_en == 'sat' ? '09:00' : '08:00';
+				$max_time = $day_en == 'sat' ? '17:00' : '22:00';
+
 				// Obtener el valor del campo personalizado correspondiente al día
 				$day_data = get_post_meta( $post_id, "medilink_doctor_horarios_{$day_en}", true );
 				// Comprobar si el campo tiene datos o no
@@ -198,26 +204,26 @@ function create_form_shortcode( $atts ) {
 
 				// Imprimir el marcado html con el nombre del día en español y el valor en inglés
 				echo "<div class='day-service-hours'>
-					<input type='checkbox' id='$day_en' name='$day_en' value='true' class='day-checkbox'" . checked( $checked, true, false ) . ">
+					<input type='checkbox' id='$day_en' name='$day_en' value='true' class='day-checkbox' $disabled_day" . checked( $checked, true, false ) . ">
 					<label for='$day_en'>$day_es</label>
 					<input type='hidden' id='{$day_en}-hidden' name='$day_en' value='false'>
 					<div class='time'>
 						<div class='start-time'>
 							<label for='{$day_en}_start_a'>Desde:</label>
-							<input type='time' id='{$day_en}_start_a' name='{$day_en}_start_a' min='08:00' max='22:00' value='$start_a'>
+							<input type='time' id='{$day_en}_start_a' name='{$day_en}_start_a' min='$min_time' max='$max_time' value='$start_a'>
 						</div>
 						<div class='end-time'>
 							<label for='{$day_en}_end_a'>Hasta:</label>
-							<input type='time' id='{$day_en}_end_a' name='{$day_en}_end_a' min='08:00' max='22:00' value='$end_a'>
+							<input type='time' id='{$day_en}_end_a' name='{$day_en}_end_a' min='$min_time' max='$max_time' value='$end_a'>
 						</div>
 						<br>
 						<div class='start-time'>
 							<label for='{$day_en}_start_b'>Desde:</label>
-							<input type='time' id='{$day_en}_start_b' name='{$day_en}_start_b' min='08:00' max='22:00'" . disabled( ! $checked, true, false ) . " value='$start_b'>
+							<input type='time' id='{$day_en}_start_b' name='{$day_en}_start_b' min='$min_time' max='$max_time'" . disabled( ! $checked, true, false ) . " value='$start_b'>
 						</div>
 						<div class='end-time'>
 							<label for='{$day_en}_end_b'>Hasta:</label>
-							<input type='time' id='{$day_en}_end_b' name='{$day_en}_end_b' min='08:00' max='22:00'" . disabled( ! $checked, true, false ) . " value='$end_b'>
+							<input type='time' id='{$day_en}_end_b' name='{$day_en}_end_b' min='$min_time' max='$max_time'" . disabled( ! $checked, true, false ) . " value='$end_b'>
 						</div>
 					</div>
 				</div>";
