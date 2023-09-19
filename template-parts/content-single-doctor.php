@@ -138,7 +138,7 @@ foreach ( $_days as $day_en => $day_es ) {
 				<?php if ( ! empty( $_medical_group ) ) { ?>
 				<div class="single-item">
 					<h3 class="section-title title-bar-primary2"><?php echo esc_html( 'Grupo médico' ); ?></h3>
-					<p class="item-medgroup">Pertece al Staff de: <span><?php echo esc_html( $_medical_group ); ?></span></p>
+					<p class="item-medgroup">Pertenece al Staff de: <span><?php echo esc_html( $_medical_group ); ?></span></p>
 				</div>
 				<?php } ?>
 			</div>

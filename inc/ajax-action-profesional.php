@@ -132,7 +132,7 @@ function procesar_formulario_nuevo_profesional() {
 			// Si hay un ID, actualizar el post existente con los nuevos datos
 			$_post_array['ID'] = $post_id;
 
-			// Limpiar campos de horarios 
+			// Limpiar campos de horarios
 			vittalia_delete_horarios_postmeta( $post_id );
 
 			$profesional_id = wp_update_post( $_post_array );
@@ -140,7 +140,7 @@ function procesar_formulario_nuevo_profesional() {
 		} else {
 			// Si no hay un ID, agregar la imagen destacada por defecto
 			$_post_array['_thumbnail_id'] = $thumbnail_id;
-			
+
 			// Crear un nuevo post con los datos del formulario
 			$profesional_id = wp_insert_post( $_post_array );
 			$post_action    = 'create';
@@ -190,9 +190,9 @@ function enviar_correo_nuevo_profesional( $datos, $horarios, $link, $post_action
 	$destinatario = get_bloginfo( 'admin_email' );
 	// Cambiar el asunto según la acción
 	if ( $post_action == 'create' ) {
-		$asunto = 'Nuevo profesional creado desde el frontend';
+		$asunto = 'Nuevo perfil creado desde el Panel Profesional';
 	} else {
-		$asunto = 'Profesional actualizado desde el frontend';
+		$asunto = 'Perfil actualizado desde el Panel Profesional';
 	}
 
 	// Obtener la URL del sitio
@@ -215,7 +215,7 @@ function enviar_correo_nuevo_profesional( $datos, $horarios, $link, $post_action
 			break;
 	}
 
-	$contenido  = '<p>Se ha ' . ( $post_action == 'create' ? 'creado' : 'actualizado' ) . ' un post de tipo "medilink_doctor" desde el frontend con los siguientes datos:</p>';
+	$contenido  = '<p>Se ha ' . ( $post_action == 'create' ? 'creado' : 'actualizado' ) . ' el perfil de un profesional con los siguientes datos:</p>';
 	$contenido .= '<ul>';
 	$contenido .= '<li>Título: ' . esc_html( $datos['title'] ) . '</li>';
 	$contenido .= '<li>Acerca de: ' . esc_html( $datos['about'] ) . '</li>';
@@ -273,9 +273,9 @@ function enviar_correo_nuevo_profesional( $datos, $horarios, $link, $post_action
 	// Incluir el link del post creado o actualizado en el contenido del correo
 	// Cambiar el texto según la acción
 	if ( $post_action == 'create' ) {
-		$contenido .= '<p>Un nuevo profesional ha sido creado desde el frontend.</p>';
+		$contenido .= '<p>El nuevo profesional ha sido creado desde el formulario del Panel Profesional.</p>';
 	} else {
-		$contenido .= '<p>El profesional ha sido actualizado desde el frontend.</p>';
+		$contenido .= '<p>El profesional ha sido actualizado desde el formulario del Panel Profesional.</p>';
 	}
 	$contenido .= '<p>Puedes revisar y editar el post desde el panel de administración o desde este <a href="' . esc_url( $link ) . '">enlace</a>.</p>';
 

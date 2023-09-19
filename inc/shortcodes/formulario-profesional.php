@@ -176,7 +176,7 @@ function create_form_shortcode( $atts ) {
 				$day_en = strtolower( $day_en );
 
 				// Determinar los días que no están habilitados
-				$disabled_day = in_array($day_en,['sun']) ? 'disabled' : '';
+				$disabled_day = in_array( $day_en, array( 'sun' ) ) ? 'disabled' : '';
 
 				$min_time = $day_en == 'sat' ? '09:00' : '08:00';
 				$max_time = $day_en == 'sat' ? '17:00' : '22:00';
