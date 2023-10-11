@@ -186,9 +186,32 @@ function enviar_correo_nuevo_profesional( $datos, $horarios, $link, $post_action
 			return 'text/html'; }
 	);
 
-	// Definir el destinatario y el asunto del correo
-	$destinatario = get_bloginfo( 'admin_email' );
-	// Cambiar el asunto según la acción
+	// Definir destinatarios del correo
+	$destinatarios    = array();
+	$main_admin_email = get_bloginfo( 'admin_email' );
+	$admin_emails     = get_admin_emails();
+	$editor_emails    = get_editor_emails();
+	$to_admins        = (int) $_POST['to_admins'];
+	$to_editors       = (int) $_POST['to_editors'];
+
+	if ( ! $to_admins && ! $to_editors ) {
+		$destinatarios[] = $main_admin_email;
+	}
+	$_admin_emails  = array_filter(
+		$admin_emails,
+		function( $email ) use ( $to_admins ) {
+			return $to_admins;
+		}
+	);
+	$_editor_emails = array_filter(
+		$editor_emails,
+		function( $email ) use ( $to_editors ) {
+			return $to_editors;
+		}
+	);
+	$destinatarios  = array_merge( $destinatarios, $_admin_emails, $_editor_emails );
+
+	// Definir el asunto del correo según la acción
 	if ( $post_action == 'create' ) {
 		$asunto = 'Nuevo perfil creado desde el Panel Profesional';
 	} else {
@@ -281,13 +304,16 @@ function enviar_correo_nuevo_profesional( $datos, $horarios, $link, $post_action
 
 	// Definir las cabeceras del correo
 	$cabeceras = array(
-		"From: Vitttalia Web <noreply@$site_domain>", // Indicar el remitente
-		"Reply-To: Nico <$destinatario>", // Indicar a dónde responder
-		'Cc: Claudio <claumigue@gmail.com>', // Indicar a dónde responder
+		"From: Vitttalia Web <noreply@$site_domain>", // remitente
+		"Reply-To: Administrador del sitio <$main_admin_email>", // dónde responder
 	);
+	// Cc header
+	if ( $cc_list = validate_emails( $_POST['cc_list'] ) ) {
+		$cabeceras[] = "Cc: $cc_list";
+	}
 
 	// Enviar el correo usando la función wp_mail() y guardar el resultado
-	$resultado = wp_mail( $destinatario, $asunto, $contenido, $cabeceras );
+	$resultado = wp_mail( $destinatarios, $asunto, $contenido, $cabeceras );
 
 	// Restablecer el tipo de contenido para evitar conflictos
 	remove_filter( 'wp_mail_content_type', '__return_false' );
@@ -306,5 +332,4 @@ function depurar_error_al_enviar_correo( $error ) {
 	// echo 'El correo no se pudo enviar por el siguiente motivo: ' . $mensaje_error;
 	error_log( 'El correo no se pudo enviar por el siguiente motivo: ' . $mensaje_error );
 	error_log( print_r( $datos_correo, true ) );
-
 }

@@ -6,9 +6,14 @@ function create_form_shortcode( $atts ) {
 		array(
 			'img'   => '',
 			'infob' => '',
+			'admins' => 0,
+			'editors' => 0,
+			'cc' => '',
 		),
 		$atts
 	);
+	// Obtener el listado de emails válidos para copia carbón
+	$valid_cc_list = validate_emails( $a['cc'] );
 
 	// Obtener el ID del usuario actual
 	$user_id = get_current_user_id();
@@ -87,13 +92,18 @@ function create_form_shortcode( $atts ) {
 	?>
 	<form id="nuevoProfesional" method="post" action="" class="wpcf7-form np-form">
 
-		<!-- Añadir un campo oculto con el ID del post, si existe, o con un valor vacío, si no existe -->
 		<input type="hidden" id="post_id" name="post_id" value="<?php echo $post ? esc_attr( $post_id ) : ''; ?>">
 		
-		<!-- Añadir un campo oculto con el ID de la imagen por defecto -->
 		<input type="hidden" id="thumbnail_id" name="thumbnail_id" value="<?php echo esc_attr( $a['img'] ); ?>">
 		
-		<!-- Añadir los demás campos del formulario -->
+		<input type="hidden" id="to_admins" name="to_admins" value="<?php echo esc_attr( $a['admins'] ); ?>">
+		
+		<input type="hidden" id="to_editors" name="to_editors" value="<?php echo esc_attr( $a['editors'] ); ?>">
+		
+		<?php if ( $valid_cc_list ) { ?>
+			<input type="hidden" id="cc_list" name="cc_list" value="<?php echo esc_attr( $valid_cc_list ); ?>">
+		<?php } ?>
+		
 		<div class="npf-title mb-5 pt-5">
 			<label class="h3" for="doctor_title">
 				<img class="d-inline" src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/svg/i-user.svg" alt="<?php esc_html_e( 'figure', 'medilink' ); ?>">
@@ -122,7 +132,6 @@ function create_form_shortcode( $atts ) {
 			)
 		);
 		?>
-		<!-- Imprimir la lista desplegable mostrando los términos como opciones -->
 		<div class="npf-category mb-5 pt-5"><label class="h3" for="doctor_category">Especialidad</label>
 			<?php echo $especialidades; ?>
 		</div>
@@ -208,20 +217,19 @@ function create_form_shortcode( $atts ) {
 					<label for='$day_en'>$day_es</label>
 					<input type='hidden' id='{$day_en}-hidden' name='$day_en' value='false'>
 					<div class='time'>
-						<div class='start-time'>
+						<div class='start-time start-time-a'>
 							<label for='{$day_en}_start_a'>Desde:</label>
 							<input type='time' id='{$day_en}_start_a' name='{$day_en}_start_a' min='$min_time' max='$max_time' value='$start_a'>
 						</div>
-						<div class='end-time'>
+						<div class='end-time end-time-a'>
 							<label for='{$day_en}_end_a'>Hasta:</label>
 							<input type='time' id='{$day_en}_end_a' name='{$day_en}_end_a' min='$min_time' max='$max_time' value='$end_a'>
 						</div>
-						<br>
-						<div class='start-time'>
+						<div class='start-time start-time-b'>
 							<label for='{$day_en}_start_b'>Desde:</label>
 							<input type='time' id='{$day_en}_start_b' name='{$day_en}_start_b' min='$min_time' max='$max_time'" . disabled( ! $checked, true, false ) . " value='$start_b'>
 						</div>
-						<div class='end-time'>
+						<div class='end-time end-time-b'>
 							<label for='{$day_en}_end_b'>Hasta:</label>
 							<input type='time' id='{$day_en}_end_b' name='{$day_en}_end_b' min='$min_time' max='$max_time'" . disabled( ! $checked, true, false ) . " value='$end_b'>
 						</div>
@@ -304,10 +312,10 @@ function create_form_shortcode( $atts ) {
 		<?php } ?>
 		
 		<div class="npf-buttons">
-			<!-- Añadir un botón para enviar el formulario -->
+			<!-- submit button -->
 			<button id="submit" type="submit"><?php echo $post_id ? 'Actualizar datos' : 'Enviar datos'; ?></button>
 
-			<!-- Añadir un botón para ver el post -->
+			<!-- view post button -->
 			<?php
 			if ( $post_id ) {
 				echo '<a class="btn-extra" href="' . esc_url( get_permalink( $post_id ) ) . '" aria-label="Ver mi página" target="_blank"><span>Ver mi página</span></a>';
@@ -315,7 +323,7 @@ function create_form_shortcode( $atts ) {
 			?>
 		</div>
 
-		<!-- Añadir un campo para los mensajes de confirmación y error -->
+		<!-- error and confirmation message field -->
 		<p class="status-msg" style="display: none"></p>
 
 	</form>

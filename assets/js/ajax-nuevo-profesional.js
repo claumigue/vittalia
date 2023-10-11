@@ -46,7 +46,7 @@ jQuery(document).ready(function ($) {
         // Obtener el ID del post si existe
         let post_id = $('#post_id').val();
 
-        // Obtener el ID del post si existe
+        // Obtener el ID de la imagen por defecto si existe
         let thumbnail_id = $('#thumbnail_id').val();
 
         // Crear un objeto con los datos del formulario y el ID del post si existe
@@ -71,17 +71,16 @@ jQuery(document).ready(function ($) {
             youtube: $('#doctor_youtube').val(),
             twitter: $('#doctor_twitter').val(),
             days: days_data,
+            to_admins: $('#to_admins').val(),
+            to_editors: $('#to_editors').val(),
+			cc_list : $('#cc_list').val(),
         };
 
         // Si hay un ID del post, añadirlo al objeto data
-        if (post_id) {
-            data.id = post_id;
-        }
+		post_id ? data.id = post_id : null;
 
-        // Si hay un ID de la imagen por defecto añadirlo al objeto data
-        if (thumbnail_id) {
-            data.thumbnail = thumbnail_id;
-        }
+		// Si hay un ID de la imagen por defecto añadirlo al objeto data
+		thumbnail_id ? data.thumbnail = thumbnail_id : null;
 
         // Enviar la solicitud ajax con el objeto data
 		$.ajax({
@@ -101,7 +100,7 @@ jQuery(document).ready(function ($) {
 				const link = res.link;
 				// Añadir el link al mensaje que se muestra en el frontend
 				const noticeClass = res.status === 1 ? 'success' : 'error';
-				const noticeMsg = res.status === 1 ? res.msg + ' Puedes verla desde este <a href="' + link + '">enlace</a>.' : res.msg;
+				const noticeMsg = res.status === 1 ? res.msg + ' Puedes verla desde este <a href="' + link + '" target="_blank">enlace</a>.' : res.msg;
 				$('.status-msg').removeClass([['error', 'success']]).addClass(noticeClass).html(noticeMsg);
 			})
 			// Code to run if the request fails; the raw request and
