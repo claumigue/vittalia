@@ -76,7 +76,7 @@ Tags:           one-column, two-columns, right-sidebar, accessibility-ready, cus
 .day-checkbox:checked~.time {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: space-evenly;
     width: 100%;
 }
 
@@ -92,11 +92,13 @@ Tags:           one-column, two-columns, right-sidebar, accessibility-ready, cus
 }
 
 .day-service-hours label {
+    font-size: 15px;
     margin-bottom: 0;
+    margin-left: 10px;
 }
 
 .day-checkbox~label {
-    width: 26%;
+    width: auto;
     margin-left: 10px;
 }
 
@@ -109,21 +111,21 @@ Tags:           one-column, two-columns, right-sidebar, accessibility-ready, cus
 }
 
 .start-time {
-    min-width: 50%;
+    /* min-width: 50%; */
     margin-bottom: 10px;
 }
 
 .end-time {
-    min-width: 50%;
+    /* min-width: 50%; */
     margin-bottom: 10px;
 }
 
-@media (max-width: 411px) {
+@media (max-width: 345px) {
     .day-service-hours {
         display: block;
         align-items: center;
     }
-    .day-checkbox~label {
-        width: 30%;
+    .day-service-hours .time {
+        padding-top: 10px;
     }
 }
