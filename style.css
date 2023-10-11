@@ -100,6 +100,7 @@ Tags:           one-column, two-columns, right-sidebar, accessibility-ready, cus
 .day-checkbox~label {
     width: auto;
     margin-left: 10px;
+    word-break: normal;
 }
 
 .time label {
@@ -110,13 +111,9 @@ Tags:           one-column, two-columns, right-sidebar, accessibility-ready, cus
     width: initial;
 }
 
-.start-time {
-    /* min-width: 50%; */
-    margin-bottom: 10px;
-}
-
+.start-time,
 .end-time {
-    /* min-width: 50%; */
+    min-width: 35%;
     margin-bottom: 10px;
 }
 
